@@ -36,7 +36,7 @@ public class Game {
     int initRow, initCol, finalRow, finalCol;
     static Player whitePlayer, blackPlayer;
     static Leaderboard leaderboard;
-    public ChessGUI gui;
+    //public ChessGUI gui;
 
     public Game() {
         over = false;
@@ -44,7 +44,7 @@ public class Game {
         input = new Scanner(System.in);
         board = new Board();
         leaderboard = new Leaderboard();
-        gui = new ChessGUI();
+        //gui = new ChessGUI();
         
         
 

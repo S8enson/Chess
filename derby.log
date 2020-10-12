@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue Oct 13 10:03:15 NZDT 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0175-1e9f-defc-00000f335400 
+on database directory /Users/Sam/Desktop/UNI/2020/Sem 2/ENSE600/Ass2/Chess/PlayerDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@4f8e5cde 
+Loaded from file:/Applications/NetBeans/glassfish-4.1.1/javadb/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=9.0.1+11
+user.dir=/Users/Sam/Desktop/UNI/2020/Sem 2/ENSE600/Ass2/Chess
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.15.6
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
