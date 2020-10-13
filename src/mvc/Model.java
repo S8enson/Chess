@@ -5,6 +5,7 @@
  */
 package mvc;
 
+import chess.Game;
 import java.util.Observable;
 import java.util.Random;
 
@@ -14,6 +15,7 @@ import java.util.Random;
  */
 public class Model extends Observable {
 
+    
     public Database db;
     public Data data;
     public int answer = 0;
@@ -37,6 +39,16 @@ public class Model extends Observable {
      * @param username
      * @param password 
      */
+    
+    public void newGame(){
+        
+        
+        Game game = new Game();
+
+        int numMoves = 0;
+        game.play();
+    
+    }
     public void checkName(String username, String password) {
         this.username = username; // Store username
         /**
@@ -102,5 +114,9 @@ public class Model extends Observable {
         this.data.quitFlag = true; // Mark quitFlag as false.
         this.setChanged();
         this.notifyObservers(this.data);
+    }
+
+    void login() {
+        
     }
 }
