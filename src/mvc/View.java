@@ -19,6 +19,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import images.HomePanel2;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 
 /**
  *
@@ -41,7 +44,7 @@ public class View extends JFrame implements Observer {
     private JLabel additionLabel = new JLabel("+");
     //private JTextField secondNumber = new JTextField(10);
     private JButton newGameButton = new JButton("New Game");
-    private JButton leaderboardButton = new JButton("View LeaderBoard");
+    private JButton leaderboardButton = new JButton("LeaderBoard");
     private JButton nextButton = new JButton("Next");
     private JButton quitButton = new JButton("Quit");
     private JButton loginButton = new JButton("Log in");
@@ -62,12 +65,18 @@ public class View extends JFrame implements Observer {
      */
     public View() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1280, 720);
+        this.setSize(1000, 1000);
         this.setResizable(false);
         this.setLocationRelativeTo(null); // Make the frame located at the absolute center of the screen.
-        this.homePanel.add(title);
-        this.homePanel.add(newGameButton);
-        this.homePanel.add(leaderboardButton);
+        
+        title.setPreferredSize(new Dimension(200, 200));
+        title.setFont(new Font("Arial Black", Font.PLAIN, 48));
+        title.setForeground(Color.WHITE);
+        newGameButton.setPreferredSize(new Dimension(200, 40));
+        leaderboardButton.setPreferredSize(new Dimension(200, 40));
+        this.homePanel.add(title, BorderLayout.PAGE_START);
+        this.homePanel.add(newGameButton, BorderLayout.PAGE_END);
+        this.homePanel.add(leaderboardButton, BorderLayout.PAGE_END);
         
         
         
@@ -78,7 +87,7 @@ public class View extends JFrame implements Observer {
 //        this.userPanel.add(loginButton);
 //        this.add(this.message, BorderLayout.SOUTH);
         //this.add(userPanel);
-        this.add(homePanel);
+        this.add(homePanel, BorderLayout.CENTER);
         
         this.setVisible(true);
     }
@@ -108,6 +117,8 @@ public class View extends JFrame implements Observer {
     }
 
     public void addActionListener(ActionListener listener) {
+        this.newGameButton.addActionListener(listener);
+        this.leaderboardButton.addActionListener(listener);
         this.loginButton.addActionListener(listener);
         this.nextButton.addActionListener(listener);
         this.quitButton.addActionListener(listener);
