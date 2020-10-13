@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import images.HomePanel2;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -68,6 +68,12 @@ public class View extends JFrame implements Observer {
         this.setSize(1000, 1000);
         this.setResizable(false);
         this.setLocationRelativeTo(null); // Make the frame located at the absolute center of the screen.
+        this.userPanel.add(uName);
+        this.userPanel.add(unInput);
+        this.userPanel.add(pWord);
+        this.userPanel.add(pwInput);
+        this.userPanel.add(loginButton);
+        this.add(this.message, BorderLayout.SOUTH);
         
         title.setPreferredSize(new Dimension(200, 200));
         title.setFont(new Font("Arial Black", Font.PLAIN, 48));
@@ -77,17 +83,10 @@ public class View extends JFrame implements Observer {
         this.homePanel.add(title, BorderLayout.PAGE_START);
         this.homePanel.add(newGameButton, BorderLayout.PAGE_END);
         this.homePanel.add(leaderboardButton, BorderLayout.PAGE_END);
+        home();
         
         
         
-//        this.userPanel.add(uName);
-//        this.userPanel.add(unInput);
-//        this.userPanel.add(pWord);
-//        this.userPanel.add(pwInput);
-//        this.userPanel.add(loginButton);
-//        this.add(this.message, BorderLayout.SOUTH);
-        //this.add(userPanel);
-        this.add(homePanel, BorderLayout.CENTER);
         
         this.setVisible(true);
     }
@@ -107,6 +106,22 @@ public class View extends JFrame implements Observer {
         this.revalidate();
         this.repaint();
 
+    }
+    
+    public void home(){
+    
+        
+        
+        this.add(this.homePanel);
+        this.repaint();
+    
+    }
+    
+    public void login(){
+        this.remove(this.homePanel);
+    
+        this.add(this.userPanel);
+        this.repaint();
     }
 
     public void setQuestion(int num1, int num2) {
