@@ -78,6 +78,8 @@ public class Game {
                 System.out.println("Input Move in Format StartingColRow EndingColRow, eg B2 B3\n");
                 String out = "";
                 while (!this.over) {
+                    
+                    
                     out = board.toString();
                     System.out.println(out);
                     gameState.print(out+"\n\n");
@@ -123,30 +125,12 @@ public class Game {
     }
 
     // takes move input and implements it
-    public void move() {
-
-        if (whiteTurn) {
-            System.out.println("\n" + whitePlayer.name + "'s Turn!\nInput move:");
-        } else {
-            System.out.println("\n" + blackPlayer.name + "'s Turn!\nInput move:");
-
-        }
-
-        move = input.nextLine();
-        move = move.toLowerCase();
-
-        if (move.equals("exit")) {
-            over = true;
-            System.out.println("Thanks for playing.");
-            return;
-        }
-
-        String[] seperate = move.split(" ");
-        if (move.length() == 5) {
-            initRow = (seperate[0].charAt(1) - '1');
-            initCol = seperate[0].charAt(0) - 'a';
-            finalRow = (seperate[1].charAt(1) - '1');
-            finalCol = seperate[1].charAt(0) - 'a';
+    public void move(String start, String end) {
+        
+                    initRow = start.charAt(1) - '1';
+            initCol = start.charAt(0) - 'a';
+            finalRow = end.charAt(1) - '1';
+            finalCol = end.charAt(0) - 'a';
             Board current = new Board(board);
             if (moveValid(initRow, initCol, finalRow, finalCol, false)) {
                 gameState.print(move+"\n\n");
@@ -159,9 +143,45 @@ public class Game {
                 whiteTurn = !whiteTurn;
 
             }
-        } else {
-            System.err.println("Invalid Move");
-        }
+
+//        if (whiteTurn) {
+//            System.out.println("\n" + whitePlayer.name + "'s Turn!\nInput move:");
+//        } else {
+//            System.out.println("\n" + blackPlayer.name + "'s Turn!\nInput move:");
+//
+//        }
+//
+//        move = input.nextLine();
+//        move = move.toLowerCase();
+//
+//        if (move.equals("exit")) {
+//            over = true;
+//            System.out.println("Thanks for playing.");
+//            return;
+//        }
+
+
+//        String[] seperate = move.split(" ");
+//        if (move.length() == 5) {
+//            initRow = (seperate[0].charAt(1) - '1');
+//            initCol = seperate[0].charAt(0) - 'a';
+//            finalRow = (seperate[1].charAt(1) - '1');
+//            finalCol = seperate[1].charAt(0) - 'a';
+//            Board current = new Board(board);
+//            if (moveValid(initRow, initCol, finalRow, finalCol, false)) {
+//                gameState.print(move+"\n\n");
+//                board.move(initRow, initCol, finalRow, finalCol);
+//
+//                Piece piece = board.getPiece(finalRow, finalCol);
+//                if ((piece.getType() == Type.PAWN) && ((whiteTurn && piece.y == 7) || (!whiteTurn && piece.y == 0))) {
+//                    promotion(piece);
+//                }
+//                whiteTurn = !whiteTurn;
+//
+//            }
+//        } else {
+//            System.err.println("Invalid Move");
+//        }
 
     }
 
