@@ -62,6 +62,7 @@ public class Model extends Observable {
         input = new Scanner(System.in);
         board = new Board();
         leaderboard = new Leaderboard();
+        
     }
 
     /**
@@ -72,10 +73,48 @@ public class Model extends Observable {
      */
     public void newGame() {
 
-        Game game = new Game();
+//        Game game = new Game();
+//
+//        int numMoves = 0;
+//        game.play();
+                while (!this.over) {
 
-        int numMoves = 0;
-        game.play();
+                out = board.toString();
+                System.out.println(out);
+                gameState.print(out + "\n\n");
+
+                this.move();
+
+                PrintStream _err = System.err;
+                System.setErr(new PrintStream(new OutputStream() {
+                    public void write(int b) {
+                    }
+                }));
+                if (isChecked()) {
+                    if (checkMate()) {
+                        System.setErr(_err);
+                        if (whiteTurn) {
+                            System.out.println("CHECKMATE " + blackPlayer.name + " Wins!");
+                            blackPlayer.won();
+                            whitePlayer.lost();
+                        } else {
+                            System.out.println("CHECKMATE " + whitePlayer.name + " Wins!");
+                            whitePlayer.won();
+                            blackPlayer.lost();
+                        }
+                        this.over = true;
+                        //update leaderboard
+                        leaderboard.updateLeaderboard();
+                    } else {
+                        System.setErr(_err);
+
+                        System.err.println("You are checked");
+                    }
+                }
+                System.setErr(_err);
+
+            }
+
 
     }
 
@@ -136,91 +175,91 @@ public class Model extends Observable {
 //        this.setChanged(); 
 //        this.notifyObservers(this.data);
 //    }
-    public void quitGame() {
-        /**
-         * Update data in the database. Go to quitGame() of Database.java for a
-         * fast check.
-         */
-        //this.db.quitGame(this.data.currentScore, this.username); 
-        this.data.quitFlag = true; // Mark quitFlag as false.
-        this.setChanged();
-        this.notifyObservers(this.data);
-    }
-
-    void login() {
-
-    }
-
-    public void play() {
-        while (true) {
-            // Asks for input
-//            System.out.println("Type G to play, L to view leaderboard or E to exit:");
-//            String init = input.nextLine();
-//            if (init.toLowerCase().equals("l")) {
-//                leaderboard.printLeaderboard();
-//            } else if (init.toLowerCase().equals("g")) {
+//    public void quitGame() {
+//        /**
+//         * Update data in the database. Go to quitGame() of Database.java for a
+//         * fast check.
+//         */
+//        //this.db.quitGame(this.data.currentScore, this.username); 
+//        this.data.quitFlag = true; // Mark quitFlag as false.
+//        this.setChanged();
+//        this.notifyObservers(this.data);
+//    }
 //
-//                System.out.println("Beginning Game!\n\nEnter exit at anytime to stop the program.\n");
-//                this.getPlayers();
-            try {
-                gameState = new PrintWriter(new FileOutputStream(whitePlayer.name + blackPlayer.name + "gamelog.txt", true));
-            } catch (FileNotFoundException e) {
-            }
-            gameState.print("\n " + java.time.LocalDateTime.now() + "\n");
-            System.out.println("Input Move in Format StartingColRow EndingColRow, eg B2 B3\n");
-            String out = "";
-            while (!this.over) {
-
-                out = board.toString();
-                System.out.println(out);
-                gameState.print(out + "\n\n");
-
-                this.move();
-
-                PrintStream _err = System.err;
-                System.setErr(new PrintStream(new OutputStream() {
-                    public void write(int b) {
-                    }
-                }));
-                if (isChecked()) {
-                    if (checkMate()) {
-                        System.setErr(_err);
-                        if (whiteTurn) {
-                            System.out.println("CHECKMATE " + blackPlayer.name + " Wins!");
-                            blackPlayer.won();
-                            whitePlayer.lost();
-                        } else {
-                            System.out.println("CHECKMATE " + whitePlayer.name + " Wins!");
-                            whitePlayer.won();
-                            blackPlayer.lost();
-                        }
-                        this.over = true;
-                        //update leaderboard
-                        leaderboard.updateLeaderboard();
-                    } else {
-                        System.setErr(_err);
-
-                        System.err.println("You are checked");
-                    }
-                }
-                System.setErr(_err);
-
-            }
-            gameState.close();
-        }else if (init.toLowerCase().equals("e")) {
-                break;
-            }
-    }
+//    void login() {
+//
+//    }
+//
+//    public void play() {
+//        while (true) {
+//            // Asks for input
+////            System.out.println("Type G to play, L to view leaderboard or E to exit:");
+////            String init = input.nextLine();
+////            if (init.toLowerCase().equals("l")) {
+////                leaderboard.printLeaderboard();
+////            } else if (init.toLowerCase().equals("g")) {
+////
+////                System.out.println("Beginning Game!\n\nEnter exit at anytime to stop the program.\n");
+////                this.getPlayers();
+//            try {
+//                gameState = new PrintWriter(new FileOutputStream(whitePlayer.name + blackPlayer.name + "gamelog.txt", true));
+//            } catch (FileNotFoundException e) {
+//            }
+//            gameState.print("\n " + java.time.LocalDateTime.now() + "\n");
+//            System.out.println("Input Move in Format StartingColRow EndingColRow, eg B2 B3\n");
+//            String out = "";
+//            while (!this.over) {
+//
+//                out = board.toString();
+//                System.out.println(out);
+//                gameState.print(out + "\n\n");
+//
+//                this.move();
+//
+//                PrintStream _err = System.err;
+//                System.setErr(new PrintStream(new OutputStream() {
+//                    public void write(int b) {
+//                    }
+//                }));
+//                if (isChecked()) {
+//                    if (checkMate()) {
+//                        System.setErr(_err);
+//                        if (whiteTurn) {
+//                            System.out.println("CHECKMATE " + blackPlayer.name + " Wins!");
+//                            blackPlayer.won();
+//                            whitePlayer.lost();
+//                        } else {
+//                            System.out.println("CHECKMATE " + whitePlayer.name + " Wins!");
+//                            whitePlayer.won();
+//                            blackPlayer.lost();
+//                        }
+//                        this.over = true;
+//                        //update leaderboard
+//                        leaderboard.updateLeaderboard();
+//                    } else {
+//                        System.setErr(_err);
+//
+//                        System.err.println("You are checked");
+//                    }
+//                }
+//                System.setErr(_err);
+//
+//            }
+//            gameState.close();
+//        }else if (init.toLowerCase().equals("e")) {
+//                break;
+//            }
+//    }
 
     public void move(String start, String end) {
 
         initRow = start.charAt(1) - '1';
-        initCol = start.charAt(0) - 'a';
+        initCol = start.charAt(0) - 'A';
         finalRow = end.charAt(1) - '1';
-        finalCol = end.charAt(0) - 'a';
+        finalCol = end.charAt(0) - 'A';
         Board current = new Board(board);
         if (moveValid(initRow, initCol, finalRow, finalCol, false)) {
-            gameState.print(move + "\n\n");
+            //gameState.print(move + "\n\n");
             board.move(initRow, initCol, finalRow, finalCol);
 
             Piece piece = board.getPiece(finalRow, finalCol);

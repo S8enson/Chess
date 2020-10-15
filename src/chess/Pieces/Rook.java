@@ -1,8 +1,9 @@
 package chess.Pieces;
 
-import chess.Colour;
+import mvc.Colour;
 import chess.Player;
-import chess.Type;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,7 +22,17 @@ public class Rook extends Piece{
          public Rook(int x, int y, Colour c){
          super(x, y, c);
          type = Type.ROOK;
-         
+                 if (colour == Colour.BLACK) {
+            try {
+                img = ImageIO.read(getClass().getResource("/images/BR.gif"));
+            } catch (IOException e) {
+            }
+        } else if (colour == Colour.WHITE) {
+            try {
+                img = ImageIO.read(getClass().getResource("/images/WR.gif"));
+            } catch (IOException e) {
+            }
+        }
          }
          
          public Rook(Rook copy){

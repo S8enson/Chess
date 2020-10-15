@@ -81,11 +81,7 @@ public class View extends JFrame implements Observer {
      * class. Go to Model.java for Step 2.
      */
     public View() {
-//        try{
-//   UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-// }catch(Exception e){
-//  e.printStackTrace(); 
-// }
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800, 800);
         this.setResizable(false);
@@ -108,6 +104,9 @@ public class View extends JFrame implements Observer {
         this.homePanel.add(newGameButton, BorderLayout.PAGE_END);
         this.homePanel.add(leaderboardButton, BorderLayout.PAGE_END);
         home();
+        
+        gamePanel = createPanel();
+        this.gamePanel.add(piecePanel);
 
         this.setVisible(true);
     }
@@ -144,14 +143,11 @@ public class View extends JFrame implements Observer {
     }
 
     public void test() {
-        //boardPanel = (BoardPanel) createPanel();
-        gamePanel = createPanel();
-        //gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
+        
+        
         this.getContentPane().removeAll();
-        //boardPanel.setVisible(true);
-        //this.boardPanel.setSize(new Dimension(500, 500));
-        //this.gamePanel.add(this.boardPanel);
-        this.gamePanel.add(piecePanel);
+        gamePanel.setVisible(true);
+        
         this.add(this.gamePanel);
 
         this.revalidate();
@@ -174,16 +170,7 @@ public class View extends JFrame implements Observer {
 
         JPanel buttonPanel = new JPanel(new GridLayout(8, 8));
         JPanel popPanel = new JPanel(new GridLayout(8, 8));
-//        JButton button = new JButton("Show Message");
-//        button.setAlignmentX(0.5f);
-//        button.setAlignmentY(0.5f);
 
-//        JPanel popupPanel = createPopupPanel(button);
-//        popupPanel.setAlignmentX(0.1f);
-//        popupPanel.setAlignmentY(0.1f);
-//JPanel popupPanel = createPopupPanel(buttonPanel);
-//popupPanel.setVisible(true);
-//            mainPanel.add(popupPanel);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 String s = Character.toString((char) (j + 65)) + (8 - i);
@@ -195,21 +182,21 @@ public class View extends JFrame implements Observer {
                 buttons[8 * i + j] = button;
                 popupPanel.setVisible(true);
 
-                //button.seti
+                
                 if (i % 2 == 1) {
                     if (j % 2 == 0) {
-                        //g.setColor(light);
+                        
                         button.setBackground(dark);
                     } else {
-                        //g.setColor(dark);
+                        
                         button.setBackground(light);
                     }
                 } else {
                     if (j % 2 == 0) {
-                        //g.setColor(dark);
+                        
                         button.setBackground(light);
                     } else {
-                        //g.setColor(light);
+                        
                         button.setBackground(dark);
                     }
                 }
@@ -222,13 +209,7 @@ public class View extends JFrame implements Observer {
                 mainPanel.add(buttonPanel);
             }
         }
-//        button.addActionListener(e -> {
-//            //button.setEnabled(false);
-//            popupPanel.setVisible(true);
-//        });
 
-//        mainPanel.add(popupPanel);
-//        mainPanel.add(button);
         return mainPanel;
     }
 
@@ -236,8 +217,7 @@ public class View extends JFrame implements Observer {
         JPanel popupPanel = new JPanel(new BorderLayout());
         popupPanel.setOpaque(false);
         popupPanel.setMaximumSize(new Dimension(800, 800));
-        //popupPanel.setBorder(new LineBorder(Color.gray));
-        //popupPanel.setVisible(false);
+        
 
         JLabel label = new JLabel("");
 
@@ -245,12 +225,7 @@ public class View extends JFrame implements Observer {
 
         popupPanel.add(wrapInPanel(label), BorderLayout.NORTH);
 
-        //JButton popupCloseButton = new JButton("Close");
-        //popupPanel.add(wrapInPanel(popupCloseButton), BorderLayout.SOUTH);
-        //popupCloseButton.addActionListener(e -> {
-        //overlapComponent.setEnabled(true);
-        //    popupPanel.setVisible(false);
-        //});
+        
         return popupPanel;
     }
 
@@ -285,7 +260,7 @@ public class View extends JFrame implements Observer {
         JLabel scoreLabel = new JLabel("Your score: " + score);
         quitPanel.add(scoreLabel);
         this.getContentPane().removeAll();
-        //calcPanel.setVisible(true);
+        
         this.add(quitPanel);
         this.revalidate();
         this.repaint();

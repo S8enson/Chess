@@ -1,4 +1,4 @@
-package chess;
+package mvc;
 
 import chess.Pieces.Piece;
 

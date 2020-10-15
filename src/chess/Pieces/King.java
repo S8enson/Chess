@@ -1,8 +1,9 @@
 package chess.Pieces;
 
-import chess.Colour;
+import mvc.Colour;
 import chess.Player;
-import chess.Type;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,6 +24,17 @@ public class King extends Piece{
          super(x, y, c);
          type = Type.KING;
          alive = true;
+                 if (colour == Colour.BLACK) {
+            try {
+                img = ImageIO.read(getClass().getResource("/images/BK.gif"));
+            } catch (IOException e) {
+            }
+        } else if (colour == Colour.WHITE) {
+            try {
+                img = ImageIO.read(getClass().getResource("/images/WK.gif"));
+            } catch (IOException e) {
+            }
+        }
          }
          
          public King(King copy){

@@ -7,6 +7,7 @@ package mvc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JLabel;
 import javax.swing.JToggleButton;
 
 /**
@@ -19,6 +20,8 @@ public class Controller implements ActionListener {
     public Model model;
     public boolean first;
     public JToggleButton firstButton;
+    public String start;
+    public String end;
 
     /**
      * Step 4: Assign view and model to attributes in the constructor, and add
@@ -61,21 +64,40 @@ public class Controller implements ActionListener {
         } else if (command.equals("test")) { // Quit button
             //this.model.newGame();
             this.view.test();
-            this.model.board.drawBoard(this.view.boardPanel.getGraphics());
+            this.updateBoard();
+            
+            //this.model.board.drawBoard(this.view.piecePanel.getGraphics());
             // Record user's current score.
         } else if (e.getSource() instanceof JToggleButton) {
             if (first) {
-                String start = ((JToggleButton) e.getSource()).getText();
+                start = ((JToggleButton) e.getSource()).getText();
                 first = false;
                 firstButton = ((JToggleButton) e.getSource());
             } else if (!first) {
-                String end = ((JToggleButton) e.getSource()).getText();
+                end = ((JToggleButton) e.getSource()).getText();
                 first = true;
                 ((JToggleButton) e.getSource()).setSelected(false);
                 firstButton.setSelected(false);
+                this.model.move(start, end);
+                this.updateBoard();
             }
         }
 
+    }
+
+    private void updateBoard() {
+        String s;
+            
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if(this.model.board.getPiece(i, j) == null){
+                    s = "";
+                    }else{
+                    s = this.model.board.getPiece(i, j).toString();
+                    }
+                    this.view.setPieceString(s, i, j);
+                }
+            }
     }
 
 }

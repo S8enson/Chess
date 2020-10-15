@@ -26,18 +26,30 @@ import javax.swing.JToggleButton;
 public class BoardPanel extends JPanel {
 
     public JToggleButton[] buttons;
+    public Board board;
+    public JToggleButton button;
+    public String s;
+    public Color dark;
+    public Color light;
 
     public BoardPanel() {
         buttons = new JToggleButton[64];
-                Color light = new Color(255, 223, 158);
-        Color dark = new Color(138, 101, 54);
-        JToggleButton button;
-        String s;
-        for (int i = 0; i < 8; i++) {
+        light = new Color(255, 223, 158);
+        dark = new Color(138, 101, 54);
+        
+        
+        this.setLayout(new GridLayout(8, 8));
+
+        update();
+
+    }
+
+    public void update(){
+    for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 s = Character.toString((char)(j+65))+(8-i);
                 button = new JToggleButton(s);
-                
+                //button.seti
                 if (i % 2 == 1) {
                     if (j % 2 == 0) {
                         //g.setColor(light);
@@ -64,15 +76,15 @@ public class BoardPanel extends JPanel {
                 
                 this.add(button);
                 buttons[i*j]=button;
+                
 //              this.button.addActionListener(listener);
             }
         }
-        this.setLayout(new GridLayout(8, 8));
-
-
-
+    
     }
-
+    public void setBoard(Board board){
+    this.board = board;
+    }
 
 
 //    @Override

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mvc;
+package images;
 
 /**
  *
@@ -28,15 +28,13 @@ public class HomePanel extends JPanel {
         
 
         try {
-            img = ImageIO.read(getClass().getResource("/images/homeBG.png"));
+            img = ImageIO.read(getClass().getResource("/images/homeBG.jpeg"));
         } catch (IOException e) {
         }
 
     }
 
-    public Dimension getPreferredSize() {
-        return new Dimension(250, 200);
-    }
+
 
     @Override
     public void paintComponent(Graphics g) {
