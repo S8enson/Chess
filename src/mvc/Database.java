@@ -42,7 +42,7 @@ public class Database {
             String tableName = "UserInfo";
 
             if (!checkTableExisting(tableName)) {
-                statement.executeUpdate("CREATE TABLE " + tableName + " (userid VARCHAR(12), password VARCHAR(12), wins INT, losses INT)");
+                statement.executeUpdate("CREATE TABLE " + tableName + " (userid VARCHAR(12), wins INT, losses INT)");
             }
             //statement.executeUpdate("INSERT INTO " + tableName + " VALUES('Fiction',0),('Non-fiction',10),('Textbook',20)");
             statement.close();
@@ -60,31 +60,33 @@ public class Database {
      * @param password
      * @return data
      */
-    public Data checkName(String wUsername, String wPassword, String bUsername, String bPassword) {
+    public Data checkName(String wUsername, String bUsername) {
         Data data = new Data(); // Initialize an instance of Data.
+        data.wUsername=wUsername;
+        data.bUsername=bUsername;
         try {
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT userid, password, wins, losses FROM UserInfo " + "WHERE userid = '" + wUsername + "'");
+            ResultSet rs = statement.executeQuery("SELECT userid, wins, losses FROM UserInfo " + "WHERE userid = '" + wUsername + "'");
             if (rs.next()) {
-                String pass = rs.getString("password");
-                System.out.println("***" + pass);
-                System.out.println("found user");
+//                String pass = rs.getString("password");
+//                System.out.println("***" + pass);
+//                System.out.println("found user");
                 /**
                  * If the username exists in the USERINFO table, and the
                  * password is correct, change the value of relating attributes
                  * of data. Otherwise, keep loginFlag as false.
                  */
-                if (wPassword.compareTo(pass) == 0) {
+//                if (wPassword.compareTo(pass) == 0) {
 
                     data.whiteWins = rs.getInt("wins");
                     data.whiteLosses = rs.getInt("losses");
-                    data.whiteLoginFlag = true;
+                    //data.whiteLoginFlag = true;
 
-                } else {
-
-                    data.whiteLoginFlag = false;
-
-                }
+//                } else {
+//
+//                    data.whiteLoginFlag = false;
+//
+//                }
             } else {
                 /**
                  * If the username does not exist in the USERINFO table, then
@@ -93,34 +95,34 @@ public class Database {
                  */
                 System.out.println("no such user");
                 statement.executeUpdate("INSERT INTO UserInfo "
-                        + "VALUES('" + wUsername + "', '" + wPassword + "', 0, 0)");
+                        + "VALUES('" + wUsername + "', 0, 0)");
 
                 data.whiteWins = 0;
                 data.whiteLosses = 0;
-                data.whiteLoginFlag = true;
+                //data.whiteLoginFlag = true;
 
             }
-            rs = statement.executeQuery("SELECT userid, password, wins, losses FROM UserInfo " + "WHERE userid = '" + bUsername + "'");
+            rs = statement.executeQuery("SELECT userid, wins, losses FROM UserInfo " + "WHERE userid = '" + bUsername + "'");
             if (rs.next()) {
-                String pass = rs.getString("password");
-                System.out.println("***" + pass);
-                System.out.println("found user");
+//                String pass = rs.getString("password");
+//                System.out.println("***" + pass);
+//                System.out.println("found user");
                 /**
                  * If the username exists in the USERINFO table, and the
                  * password is correct, change the value of relating attributes
                  * of data. Otherwise, keep loginFlag as false.
                  */
-                if (bPassword.compareTo(pass) == 0) {
+                //if (bPassword.compareTo(pass) == 0) {
 
                     data.blackWins = rs.getInt("wins");
                     data.blackLosses = rs.getInt("losses");
-                    data.blackLoginFlag = true;
+                    //data.blackLoginFlag = true;
 
-                } else {
+                //} else {
 
-                    data.blackLoginFlag = false;
+                //    data.blackLoginFlag = false;
 
-                }
+                //}
             } else {
                 /**
                  * If the username does not exist in the USERINFO table, then
@@ -129,11 +131,11 @@ public class Database {
                  */
                 System.out.println("no such user");
                 statement.executeUpdate("INSERT INTO UserInfo "
-                        + "VALUES('" + bUsername + "', '" + bPassword + "', 0, 0)");
+                        + "VALUES('" + bUsername + "', 0, 0)");
 
                 data.blackWins = 0;
                 data.blackLosses = 0;
-                data.blackLoginFlag = true;
+                //data.blackLoginFlag = true;
 
             }
         } catch (SQLException ex) {
@@ -178,4 +180,19 @@ public class Database {
 //        }
 //
 //    }
+    
+    public void gameOver(Data data){
+        Statement statement;
+   
+                try {
+            statement = conn.createStatement();
+            statement.executeUpdate("UPDATE UserInfo SET wins=" + data.whiteWins + ", losses=" + data.whiteLosses + " WHERE userid='" + data.wUsername + "'");
+            statement.executeUpdate("UPDATE UserInfo SET wins=" + data.blackWins + ", losses=" + data.blackLosses + " WHERE userid='" + data.bUsername + "'");
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+
+    }
 }

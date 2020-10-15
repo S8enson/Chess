@@ -46,8 +46,7 @@ public class Model extends Observable {
     int initRow, initCol, finalRow, finalCol;
     static Player whitePlayer, blackPlayer;
     static Leaderboard leaderboard;
-    Data whiteData;
-    Data blackData;
+    
 
     /**
      * Step 2: Initialize the instance of Database in the constructor, and build
@@ -75,14 +74,11 @@ public class Model extends Observable {
      */
     public void newGame() {
 
-        Game game = new Game();
-
-        int numMoves = 0;
-        game.play();
+        //this.move()
 
     }
 
-    public void checkName(String wUsername, String wPassword, String bUsername, String bPassword) {
+    public void checkName(String wUsername, String bUsername) {
         this.username = username; // Store username
         /**
          * Compare username and password with that inside database. Go to
@@ -91,15 +87,15 @@ public class Model extends Observable {
          * Note: You should define attributes of Data before you go to Database
          * class.
          */
-        this.data = this.db.checkName(wUsername, wPassword, bUsername, bPassword);
+        this.data = this.db.checkName(wUsername, bUsername);
 
         /**
          * After you finish Step 7. Generate a new question if data.loginFlag is
          * true, otherwise do nothing.
          */
-        if (data.whiteLoginFlag && data.blackLoginFlag) {
-            this.newGame();
-        }
+//        if (data.whiteLoginFlag && data.blackLoginFlag) {
+//            this.newGame();
+//        }
         this.setChanged(); // Essential. To mark this observable instance has been modified.
         /**
          * Pass data to Observers. Here, the observer is view. notifyObservers()
@@ -231,7 +227,49 @@ public class Model extends Observable {
             whiteTurn = !whiteTurn;
 
         }
-    }
+        
+                        PrintStream _err = System.err;
+                System.setErr(new PrintStream(new OutputStream() {
+                    public void write(int b) {
+                    }
+                }));
+                if (isChecked()) {
+                    if (checkMate()) {
+                        System.setErr(_err);
+                        if (whiteTurn) {
+//                            System.out.println("CHECKMATE " + blackPlayer.name + " Wins!");
+//                            blackPlayer.won();
+//                            whitePlayer.lost();
+this.data.blackWins++;
+this.data.whiteLosses++;
+this.data.quitFlag= true;
+this.db.gameOver(data);
+    this.setChanged();
+                        } else {
+//                            System.out.println("CHECKMATE " + whitePlayer.name + " Wins!");
+//                            whitePlayer.won();
+//                            blackPlayer.lost();
+this.data.whiteWins++;
+this.data.blackLosses++;
+this.db.gameOver(data);
+this.data.quitFlag= true;
+this.setChanged();
+                        }
+                        this.over = true;
+                        //update leaderboard
+                        leaderboard.updateLeaderboard();
+                    } else {
+                        System.setErr(_err);
+
+                        System.err.println("You are checked");
+                    }
+                }
+                System.setErr(_err);
+
+            }
+            //gameState.close();
+        
+    
 
     public boolean moveValid(int initRow, int initCol, int finalRow, int finalCol, boolean checking) {
 

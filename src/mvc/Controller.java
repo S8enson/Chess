@@ -50,15 +50,21 @@ public class Controller implements ActionListener {
         String command = e.getActionCommand(); // Obtain the text displayed on the component.
         if (command.equals("Log in")) {// Login button
             String wUsername = this.view.wUNInput.getText(); // Obtain username.
-            String wPassword = this.view.wPWInput.getText(); // Obtain password.
+            //String wPassword = this.view.wPWInput.getText(); // Obtain password.
             String bUsername = this.view.bUNInput.getText(); // Obtain username.
-            String bPassword = this.view.bPWInput.getText(); // Obtain password.
-            this.model.checkName(wUsername, wPassword, bUsername, bPassword); // Pass above variables to model. Go to the checkName() of Model.java for step 6.
+           // String bPassword = this.view.bPWInput.getText(); // Obtain password.
+           if(!wUsername.equals(bUsername)){
+            this.model.checkName(wUsername, bUsername);
+            this.view.game();
+            this.updateBoard();
+           }else{
+           //errorsamenames
+           }// Pass above variables to model. Go to the checkName() of Model.java for step 6.
 //            if(!white){
 //            this.view.game();
 //            this.updateBoard();
 //            }
-            white = !white;
+            //white = !white;
         } else if (command.equals("New Game")) { // Next button
             // Step 8:
             // Go to the checkAnswer() and quitGame() of Model.java.

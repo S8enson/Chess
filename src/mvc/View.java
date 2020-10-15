@@ -94,13 +94,13 @@ public class View extends JFrame implements Observer {
         this.userPanel.add(wMessage);
         this.userPanel.add(wUName);
         this.userPanel.add(wUNInput);
-        this.userPanel.add(wPWord);
-        this.userPanel.add(wPWInput);
+//        this.userPanel.add(wPWord);
+//        this.userPanel.add(wPWInput);
         this.userPanel.add(bMessage);
         this.userPanel.add(bUName);
         this.userPanel.add(bUNInput);
-        this.userPanel.add(bPWord);
-        this.userPanel.add(bPWInput);
+//        this.userPanel.add(bPWord);
+//        this.userPanel.add(bPWInput);
         
         this.userPanel.add(loginButton);
 
@@ -285,19 +285,20 @@ public class View extends JFrame implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        Data data = (Data) arg; // Obtain the instance of data.
-        if (!data.whiteLoginFlag) { // If loginFlage is false, then ask the user to input again.
-            this.wUNInput.setText("");
-            this.wPWInput.setText("");
-            this.wMessage.setText("Invalid username or password.");
-        }
-        else if (!data.blackLoginFlag) { // If loginFlage is false, then ask the user to input again.
-            this.bUNInput.setText("");
-            this.bPWInput.setText("");
-            this.bMessage.setText("Invalid username or password.");
-        } else if (!this.started) { // If the game has not started, then start the game.
+//        Data data = (Data) arg; // Obtain the instance of data.
+//        if (!data.whiteLoginFlag) { // If loginFlage is false, then ask the user to input again.
+//            this.wUNInput.setText("");
+//            this.wPWInput.setText("");
+//            this.wMessage.setText("Invalid username or password.");
+//        }
+//        else if (!data.blackLoginFlag) { // If loginFlage is false, then ask the user to input again.
+//            this.bUNInput.setText("");
+//            this.bPWInput.setText("");
+//            this.bMessage.setText("Invalid username or password.");
+//        } else if (!this.started) { // If the game has not started, then start the game.
             //this.startQuiz(); // Change the interface of the frame.
             this.started = true;
+            this.game();
             //this.setQuestion(data.num1, data.num2); // Show the question on the interface.
             /**
              * You need to define ActionEvent for the next and the quit buttons
@@ -305,11 +306,11 @@ public class View extends JFrame implements Observer {
              *
              * After you finish Step 9, complete last two conditions.
              */
-        } else if (data.quitFlag) { // If user quits the game, display user's current score.
-            //this.quitGame(data.currentScore);
-        } else { // Otherwise, update a new question for the user.
-            //this.setQuestion(data.num1, data.num2);
-        }
+//        } else if (data.quitFlag) { // If user quits the game, display user's current score.
+//            //this.quitGame(data.currentScore);
+//        } else { // Otherwise, update a new question for the user.
+//            //this.setQuestion(data.num1, data.num2);
+//        }
     }
 
 }
