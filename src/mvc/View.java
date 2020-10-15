@@ -5,7 +5,9 @@
  */
 package mvc;
 
+import images.HomePanel;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -22,34 +24,49 @@ import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JLayeredPane;
+import javax.swing.JToggleButton;
+import javax.swing.OverlayLayout;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 /**
  *
  * @author Shiqing Wu
  */
 public class View extends JFrame implements Observer {
-    
+
     private JPanel homePanel = new HomePanel();
-    private JPanel userPanel = new JPanel();
-    private JPanel calcPanel = new JPanel();
+    private JPanel userPanel = new JPanel(new GridLayout(0, 1));
+    BoardPanel boardPanel = new BoardPanel();
+    JPanel gamePanel = new JPanel(new CardLayout());
+    JPanel piecePanel = new JPanel();
     private JLabel uName = new JLabel("Username: ");
     private JLabel pWord = new JLabel("Password: ");
     public JTextField unInput = new JTextField(10);
     public JTextField pwInput = new JTextField(10);
     private JLabel wrongName = new JLabel("Wrong username or password!");
 
-    private JLabel title = new JLabel("Chess");
+    public static JPanel[] piecePanels = new JPanel[64];
+    public static JToggleButton[] buttons = new JToggleButton[64];
+
+    private JLabel title = new JLabel("Chess", JLabel.CENTER);
     private JLabel firstNumber = new JLabel();
     private JLabel secondNumber = new JLabel();
     private JLabel additionLabel = new JLabel("+");
     //private JTextField secondNumber = new JTextField(10);
     private JButton newGameButton = new JButton("New Game");
     private JButton leaderboardButton = new JButton("LeaderBoard");
+    private JButton testButton = new JButton("test");
     private JButton nextButton = new JButton("Next");
     private JButton quitButton = new JButton("Quit");
     private JButton loginButton = new JButton("Log in");
 
-    public JLabel message = new JLabel("Welcome!", JLabel.CENTER);
+    public JLabel message = new JLabel("White Player Enter Details", JLabel.CENTER);
     public JTextField calcSolution = new JTextField(10);
     private Image homeBG;
     //private Graphics g;
@@ -57,86 +74,210 @@ public class View extends JFrame implements Observer {
     private boolean started = false; // To identify if the game part starts.
 
     /**
-     * Step 1: 
-     * The constructor initializes the frame window as well as the login interface.
+     * Step 1: The constructor initializes the frame window as well as the login
+     * interface.
      *
-     * Note: We need to define the events of ActionListener in the Controller class. 
-     * Go to Model.java for Step 2.
+     * Note: We need to define the events of ActionListener in the Controller
+     * class. Go to Model.java for Step 2.
      */
     public View() {
+//        try{
+//   UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+// }catch(Exception e){
+//  e.printStackTrace(); 
+// }
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1000, 1000);
+        this.setSize(800, 800);
         this.setResizable(false);
         this.setLocationRelativeTo(null); // Make the frame located at the absolute center of the screen.
+        this.userPanel.add(message);
         this.userPanel.add(uName);
         this.userPanel.add(unInput);
         this.userPanel.add(pWord);
         this.userPanel.add(pwInput);
         this.userPanel.add(loginButton);
-        this.add(this.message, BorderLayout.SOUTH);
-        
+
         title.setPreferredSize(new Dimension(200, 200));
         title.setFont(new Font("Arial Black", Font.PLAIN, 48));
         title.setForeground(Color.WHITE);
         newGameButton.setPreferredSize(new Dimension(200, 40));
+        testButton.setPreferredSize(new Dimension(200, 40));
         leaderboardButton.setPreferredSize(new Dimension(200, 40));
         this.homePanel.add(title, BorderLayout.PAGE_START);
+        this.homePanel.add(testButton, BorderLayout.PAGE_END);
         this.homePanel.add(newGameButton, BorderLayout.PAGE_END);
         this.homePanel.add(leaderboardButton, BorderLayout.PAGE_END);
         home();
-        
-        
-        
-        
+
         this.setVisible(true);
     }
 
-    public void startQuiz() {
-        calcPanel.add(firstNumber);
-        calcPanel.add(additionLabel);
-        calcPanel.add(secondNumber);
+//    public void startQuiz() {
+//        calcPanel.add(firstNumber);
+//        calcPanel.add(additionLabel);
+//        calcPanel.add(secondNumber);
+//
+//        calcPanel.add(calcSolution);
+//        calcPanel.add(nextButton);
+//        calcPanel.add(quitButton);
+//
+//        this.getContentPane().removeAll();
+//        calcPanel.setVisible(true);
+//        this.add(calcPanel);
+//        this.revalidate();
+//        this.repaint();
+//
+//    }
+    public void home() {
 
-        calcPanel.add(calcSolution);
-        calcPanel.add(nextButton);
-        calcPanel.add(quitButton);
+        this.add(this.homePanel);
+        this.repaint();
 
+    }
+
+    public void login() {
         this.getContentPane().removeAll();
-        calcPanel.setVisible(true);
-        this.add(calcPanel);
+        userPanel.setVisible(true);
+        this.add(this.userPanel);
+        this.revalidate();
+        this.repaint();
+    }
+
+    public void test() {
+        //boardPanel = (BoardPanel) createPanel();
+        gamePanel = createPanel();
+        //gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
+        this.getContentPane().removeAll();
+        //boardPanel.setVisible(true);
+        //this.boardPanel.setSize(new Dimension(500, 500));
+        //this.gamePanel.add(this.boardPanel);
+        this.gamePanel.add(piecePanel);
+        this.add(this.gamePanel);
+
         this.revalidate();
         this.repaint();
 
     }
-    
-    public void home(){
-    
-        
-        
-        this.add(this.homePanel);
-        this.repaint();
-    
-    }
-    
-    public void login(){
-        this.remove(this.homePanel);
-    
-        this.add(this.userPanel);
-        this.repaint();
+
+    private static JPanel createPanel() {
+
+        Color light = new Color(255, 223, 158);
+        Color dark = new Color(138, 101, 54);
+        JPanel mainPanel = new JPanel() {
+            @Override
+            public boolean isOptimizedDrawingEnabled() {
+                return false;
+            }
+        };
+        mainPanel.setLayout(new OverlayLayout(mainPanel));
+        mainPanel.setSize(1000, 1000);
+
+        JPanel buttonPanel = new JPanel(new GridLayout(8, 8));
+        JPanel popPanel = new JPanel(new GridLayout(8, 8));
+//        JButton button = new JButton("Show Message");
+//        button.setAlignmentX(0.5f);
+//        button.setAlignmentY(0.5f);
+
+//        JPanel popupPanel = createPopupPanel(button);
+//        popupPanel.setAlignmentX(0.1f);
+//        popupPanel.setAlignmentY(0.1f);
+//JPanel popupPanel = createPopupPanel(buttonPanel);
+//popupPanel.setVisible(true);
+//            mainPanel.add(popupPanel);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                String s = Character.toString((char) (j + 65)) + (8 - i);
+                JToggleButton button = new JToggleButton(s);
+                button.setVerticalAlignment(SwingConstants.BOTTOM);
+
+                JPanel popupPanel = createPopupPanel(button);
+                piecePanels[8 * i + j] = popupPanel;
+                buttons[8 * i + j] = button;
+                popupPanel.setVisible(true);
+
+                //button.seti
+                if (i % 2 == 1) {
+                    if (j % 2 == 0) {
+                        //g.setColor(light);
+                        button.setBackground(dark);
+                    } else {
+                        //g.setColor(dark);
+                        button.setBackground(light);
+                    }
+                } else {
+                    if (j % 2 == 0) {
+                        //g.setColor(dark);
+                        button.setBackground(light);
+                    } else {
+                        //g.setColor(light);
+                        button.setBackground(dark);
+                    }
+                }
+                button.setOpaque(true);
+                button.setBorderPainted(false);
+                buttonPanel.add(button);
+                popPanel.add(popupPanel);
+                popPanel.setOpaque(false);
+                mainPanel.add(popPanel);
+                mainPanel.add(buttonPanel);
+            }
+        }
+//        button.addActionListener(e -> {
+//            //button.setEnabled(false);
+//            popupPanel.setVisible(true);
+//        });
+
+//        mainPanel.add(popupPanel);
+//        mainPanel.add(button);
+        return mainPanel;
     }
 
-    public void setQuestion(int num1, int num2) {
-        firstNumber.setText(num1 + "");
-        secondNumber.setText(num2 + "=");
-        calcSolution.setText("");
-        calcPanel.repaint();
+    private static JPanel createPopupPanel(JComponent overlapComponent) {
+        JPanel popupPanel = new JPanel(new BorderLayout());
+        popupPanel.setOpaque(false);
+        popupPanel.setMaximumSize(new Dimension(800, 800));
+        //popupPanel.setBorder(new LineBorder(Color.gray));
+        //popupPanel.setVisible(false);
+
+        JLabel label = new JLabel("");
+
+        label.setFont(new Font("Arial", Font.PLAIN, 50));
+
+        popupPanel.add(wrapInPanel(label), BorderLayout.NORTH);
+
+        //JButton popupCloseButton = new JButton("Close");
+        //popupPanel.add(wrapInPanel(popupCloseButton), BorderLayout.SOUTH);
+        //popupCloseButton.addActionListener(e -> {
+        //overlapComponent.setEnabled(true);
+        //    popupPanel.setVisible(false);
+        //});
+        return popupPanel;
+    }
+
+    private static JPanel wrapInPanel(JComponent component) {
+        JPanel jPanel = new JPanel();
+        jPanel.setBackground(new Color(50, 210, 250, 0));
+        jPanel.add(component);
+        return jPanel;
+    }
+
+    public void setPieceString(String s, int x, int y) {
+        JLabel label = ((JLabel) ((JPanel) View.piecePanels[8 * (7 - x) + y].getComponent(0)).getComponent(0));
+        label.setText(s);
     }
 
     public void addActionListener(ActionListener listener) {
         this.newGameButton.addActionListener(listener);
+        this.testButton.addActionListener(listener);
         this.leaderboardButton.addActionListener(listener);
         this.loginButton.addActionListener(listener);
         this.nextButton.addActionListener(listener);
         this.quitButton.addActionListener(listener);
+        for (int i = 0; i < 64; i++) {
+            JToggleButton button = this.buttons[i];
+            button.addActionListener(listener);
+        }
+
     }
 
     private void quitGame(int score) {
@@ -151,10 +292,10 @@ public class View extends JFrame implements Observer {
     }
 
     /**
-     * Step 7:
-     * Define the event when model has been modified.
+     * Step 7: Define the event when model has been modified.
+     *
      * @param o
-     * @param arg 
+     * @param arg
      */
     @Override
     public void update(Observable o, Object arg) {
@@ -164,22 +305,20 @@ public class View extends JFrame implements Observer {
             this.pwInput.setText("");
             this.message.setText("Invalid username or password.");
         } else if (!this.started) { // If the game has not started, then start the game.
-            this.startQuiz(); // Change the interface of the frame.
+            //this.startQuiz(); // Change the interface of the frame.
             this.started = true;
-            this.setQuestion(data.num1, data.num2); // Show the question on the interface.
+            //this.setQuestion(data.num1, data.num2); // Show the question on the interface.
             /**
-             * You need to define ActionEvent for the next and the quit buttons in the Controller.java.
-             * Back to Controller.java for Step 8.
-             * 
+             * You need to define ActionEvent for the next and the quit buttons
+             * in the Controller.java. Back to Controller.java for Step 8.
+             *
              * After you finish Step 9, complete last two conditions.
              */
         } else if (data.quitFlag) { // If user quits the game, display user's current score.
             //this.quitGame(data.currentScore);
         } else { // Otherwise, update a new question for the user.
-            this.setQuestion(data.num1, data.num2);
+            //this.setQuestion(data.num1, data.num2);
         }
     }
-    
-
 
 }
