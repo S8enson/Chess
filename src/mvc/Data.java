@@ -14,6 +14,7 @@ public class Data {
 //    boolean blackLoginFlag = false;
     String wUsername;
     String bUsername;
+    String winner = "";
     boolean quitFlag = false; // Check if the user quit the system.
     int whiteWins = 0; // Store user's cumulative scores.
     int whiteLosses = 0;

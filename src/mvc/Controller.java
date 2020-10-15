@@ -59,20 +59,29 @@ public class Controller implements ActionListener {
             this.updateBoard();
            }else{
            //errorsamenames
+           this.view.errorMessage("Names Can't Be The Same!");
            }// Pass above variables to model. Go to the checkName() of Model.java for step 6.
 //            if(!white){
 //            this.view.game();
 //            this.updateBoard();
 //            }
             //white = !white;
-        } else if (command.equals("New Game")) { // Next button
+        } else if (command.equals("Home")) { // Next button
             // Step 8:
             // Go to the checkAnswer() and quitGame() of Model.java.
+            
+            
+            
+            this.view.home(); // Check user's answer.
+        }else if (command.equals("New Game")) { // Next button
+            // Step 8:
+            // Go to the checkAnswer() and quitGame() of Model.java.
+            
+            this.resetModel();
             this.view.login(); // Check user's answer.
         } else if (command.equals("Leaderboard")) { // Next button
-            // Step 8:
-            // Go to the checkAnswer() and quitGame() of Model.java.
-            //this.model.checkAnswer(this.view.calcSolution.getText()); // Check user's answer.
+            this.model.leaderboard();
+            this.view.leaderboard();
         } else if (command.equals("Quit")) { // Quit button
             //this.model.quitGame(); // Record user's current score.
         } else if (command.equals("test")) { // Quit button
@@ -112,6 +121,11 @@ public class Controller implements ActionListener {
                     this.view.setPieceString(s, i, j);
                 }
             }
+    }
+
+    private void resetModel() {
+        this.model = new Model();
+        model.addObserver(view);
     }
 
 }

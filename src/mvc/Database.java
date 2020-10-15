@@ -5,7 +5,7 @@
  */
 package mvc;
 
-import chess.Game;
+//import chess.Game;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -24,7 +24,7 @@ import javax.swing.JPanel;
 public class Database {
 
     Connection conn = null;
-    String url = "jdbc:derby:PlayerDB;create=true";  //url of the DB host
+    String url = "jdbc:derby:ChessDB;create=true";  //url of the DB host
     //jdbc:derby://localhost:1527/BookStoreDB
     String dbusername = "ass2";  //your DB username
     String dbpassword = "ass2";   //your DB password
@@ -104,25 +104,11 @@ public class Database {
             }
             rs = statement.executeQuery("SELECT userid, wins, losses FROM UserInfo " + "WHERE userid = '" + bUsername + "'");
             if (rs.next()) {
-//                String pass = rs.getString("password");
-//                System.out.println("***" + pass);
-//                System.out.println("found user");
-                /**
-                 * If the username exists in the USERINFO table, and the
-                 * password is correct, change the value of relating attributes
-                 * of data. Otherwise, keep loginFlag as false.
-                 */
-                //if (bPassword.compareTo(pass) == 0) {
+
 
                     data.blackWins = rs.getInt("wins");
                     data.blackLosses = rs.getInt("losses");
-                    //data.blackLoginFlag = true;
 
-                //} else {
-
-                //    data.blackLoginFlag = false;
-
-                //}
             } else {
                 /**
                  * If the username does not exist in the USERINFO table, then
@@ -168,18 +154,7 @@ public class Database {
         return flag;
     }
 
-//    public void quitGame(String username) {
-//        Statement statement;
-//        //data
-//        try {
-//            statement = conn.createStatement();
-//            statement.executeUpdate("UPDATE UserInfo SET wins=" + wins + ", losses=" + losses + " WHERE userid='" + username + "'");
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//    }
+
     
     public void gameOver(Data data){
         Statement statement;
@@ -190,9 +165,20 @@ public class Database {
             statement.executeUpdate("UPDATE UserInfo SET wins=" + data.blackWins + ", losses=" + data.blackLosses + " WHERE userid='" + data.bUsername + "'");
 
         } catch (SQLException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(model.class.getName()).log(Level.SEVERE, null, ex);
         }
     
 
+    }
+
+    public void leaderboard() {
+        Statement statement;
+        
+               try{ statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT userid, wins, losses FROM UserInfo ORDER BY wins desc");
+               }catch(SQLException ex){
+               
+               }
+               //print out rows
     }
 }

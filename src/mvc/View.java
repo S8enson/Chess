@@ -22,12 +22,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
@@ -39,12 +44,20 @@ import javax.swing.border.LineBorder;
  * @author Shiqing Wu
  */
 public class View extends JFrame implements Observer {
+    
+    private JMenuBar menuBar = new JMenuBar();
+    private JMenu menu = new JMenu("Options");
+    private JMenuItem newGameItem = new JMenuItem("New Game");
+    private JMenuItem leaderboardItem = new JMenuItem("Leaderboard");
+    private JMenuItem homeItem = new JMenuItem("Home");
 
     private JPanel homePanel = new HomePanel();
     private JPanel userPanel = new JPanel(new GridLayout(0, 1));
     BoardPanel boardPanel = new BoardPanel();
     JPanel gamePanel = new JPanel(new CardLayout());
     JPanel piecePanel = new JPanel();
+    private JPanel leaderboardPanel = new JPanel();
+    
     private JLabel wUName = new JLabel("Username: ");
     private JLabel wPWord = new JLabel("Password: ");
     public JTextField wUNInput = new JTextField(10);
@@ -65,7 +78,7 @@ public class View extends JFrame implements Observer {
     //private JTextField secondNumber = new JTextField(10);
     private JButton newGameButton = new JButton("New Game");
     private JButton leaderboardButton = new JButton("LeaderBoard");
-    private JButton testButton = new JButton("test");
+    //private JButton testButton = new JButton("test");
     private JButton nextButton = new JButton("Next");
     private JButton quitButton = new JButton("Quit");
     private JButton loginButton = new JButton("Log in");
@@ -77,6 +90,8 @@ public class View extends JFrame implements Observer {
     //private Graphics g;
 
     private boolean started = false; // To identify if the game part starts.
+    private JOptionPane frame;
+    
 
     /**
      * Step 1: The constructor initializes the frame window as well as the login
@@ -103,15 +118,21 @@ public class View extends JFrame implements Observer {
 //        this.userPanel.add(bPWInput);
         
         this.userPanel.add(loginButton);
+        
+        this.menu.add(homeItem);
+        this.menu.add(newGameItem);
+        this.menu.add(leaderboardItem);
+        this.menuBar.add(menu);
+        this.setJMenuBar(menuBar);
 
         title.setPreferredSize(new Dimension(200, 200));
         title.setFont(new Font("Arial Black", Font.PLAIN, 48));
         title.setForeground(Color.WHITE);
         newGameButton.setPreferredSize(new Dimension(200, 40));
-        testButton.setPreferredSize(new Dimension(200, 40));
+        //testButton.setPreferredSize(new Dimension(200, 40));
         leaderboardButton.setPreferredSize(new Dimension(200, 40));
         this.homePanel.add(title, BorderLayout.PAGE_START);
-        this.homePanel.add(testButton, BorderLayout.PAGE_END);
+        //this.homePanel.add(testButton, BorderLayout.PAGE_END);
         this.homePanel.add(newGameButton, BorderLayout.PAGE_END);
         this.homePanel.add(leaderboardButton, BorderLayout.PAGE_END);
         home();
@@ -122,25 +143,12 @@ public class View extends JFrame implements Observer {
         this.setVisible(true);
     }
 
-//    public void startQuiz() {
-//        calcPanel.add(firstNumber);
-//        calcPanel.add(additionLabel);
-//        calcPanel.add(secondNumber);
-//
-//        calcPanel.add(calcSolution);
-//        calcPanel.add(nextButton);
-//        calcPanel.add(quitButton);
-//
-//        this.getContentPane().removeAll();
-//        calcPanel.setVisible(true);
-//        this.add(calcPanel);
-//        this.revalidate();
-//        this.repaint();
-//
-//    }
-    public void home() {
 
+    public void home() {
+        this.getContentPane().removeAll();
+        homePanel.setVisible(true);
         this.add(this.homePanel);
+        this.revalidate();
         this.repaint();
 
     }
@@ -253,8 +261,11 @@ public class View extends JFrame implements Observer {
     }
 
     public void addActionListener(ActionListener listener) {
+        this.homeItem.addActionListener(listener);
+        this.newGameItem.addActionListener(listener);
+        this.leaderboardItem.addActionListener(listener);
         this.newGameButton.addActionListener(listener);
-        this.testButton.addActionListener(listener);
+        //this.testButton.addActionListener(listener);
         this.leaderboardButton.addActionListener(listener);
         this.loginButton.addActionListener(listener);
         this.nextButton.addActionListener(listener);
@@ -297,8 +308,16 @@ public class View extends JFrame implements Observer {
 //            this.bMessage.setText("Invalid username or password.");
 //        } else if (!this.started) { // If the game has not started, then start the game.
             //this.startQuiz(); // Change the interface of the frame.
+            if(arg instanceof String){
+            this.wrongMove((String)arg);
+            
+            }else if(arg instanceof Data){
+            this.gameOver(((Data) arg).winner);
+            }
+            else{
             this.started = true;
             this.game();
+            }
             //this.setQuestion(data.num1, data.num2); // Show the question on the interface.
             /**
              * You need to define ActionEvent for the next and the quit buttons
@@ -313,4 +332,36 @@ public class View extends JFrame implements Observer {
 //        }
     }
 
+    public void leaderboard() {
+        this.getContentPane().removeAll();
+        leaderboardPanel.setVisible(true);
+        this.add(this.leaderboardPanel);
+        this.revalidate();
+        this.repaint();
+    }
+    
+    
+public void wrongMove(String s){
+    JOptionPane.showMessageDialog(frame,
+    s,
+    "Invalid Move",
+    JOptionPane.ERROR_MESSAGE);
+
+}
+
+public void gameOver(String winner){
+JOptionPane.showMessageDialog(frame,
+    winner+" wins!",
+    "Game Over",
+    JOptionPane.INFORMATION_MESSAGE);
+this.leaderboard();
+
+}
+
+    public void errorMessage(String error) {
+        JOptionPane.showMessageDialog(frame,
+    error,
+    "Error",
+    JOptionPane.ERROR_MESSAGE);
+    }
 }

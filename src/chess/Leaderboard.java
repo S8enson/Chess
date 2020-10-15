@@ -5,9 +5,9 @@
  */
 package chess;
 
-import static chess.Game.blackPlayer;
-import static chess.Game.gameState;
-import static chess.Game.whitePlayer;
+//import static chess.Game.blackPlayer;
+//import static chess.Game.gameState;
+//import static chess.Game.whitePlayer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -5,8 +5,8 @@
  */
 package mvc;
 
-import chess.Game;
-import static chess.Game.board;
+//import chess.Game;
+//import static chess.Game.board;
 import chess.Leaderboard;
 import chess.Pieces.Bishop;
 import chess.Pieces.Knight;
@@ -46,7 +46,7 @@ public class Model extends Observable {
     int initRow, initCol, finalRow, finalCol;
     static Player whitePlayer, blackPlayer;
     static Leaderboard leaderboard;
-    
+    private String invalidString;
 
     /**
      * Step 2: Initialize the instance of Database in the constructor, and build
@@ -63,7 +63,7 @@ public class Model extends Observable {
         input = new Scanner(System.in);
         board = new Board();
         leaderboard = new Leaderboard();
-        
+
     }
 
     /**
@@ -75,7 +75,6 @@ public class Model extends Observable {
     public void newGame() {
 
         //this.move()
-
     }
 
     public void checkName(String wUsername, String bUsername) {
@@ -117,7 +116,6 @@ public class Model extends Observable {
 //        int i = generator.nextInt(100);
 //        return i;
 //    }
-
     /**
      * Step 9: Define checkAnswer() and quitGame()
      *
@@ -208,68 +206,71 @@ public class Model extends Observable {
 //            gameState.close();
 //        }
 //    }
-
     public void move(String start, String end) {
+        if (!data.quitFlag) {
+            initRow = start.charAt(1) - '1';
+            initCol = start.charAt(0) - 'A';
+            finalRow = end.charAt(1) - '1';
+            finalCol = end.charAt(0) - 'A';
+            Board current = new Board(board);
+            if (moveValid(initRow, initCol, finalRow, finalCol, false)) {
+                //gameState.print(move + "\n\n");
+                board.move(initRow, initCol, finalRow, finalCol);
 
-        initRow = start.charAt(1) - '1';
-        initCol = start.charAt(0) - 'A';
-        finalRow = end.charAt(1) - '1';
-        finalCol = end.charAt(0) - 'A';
-        Board current = new Board(board);
-        if (moveValid(initRow, initCol, finalRow, finalCol, false)) {
-            //gameState.print(move + "\n\n");
-            board.move(initRow, initCol, finalRow, finalCol);
+                Piece piece = board.getPiece(finalRow, finalCol);
+                if ((piece.getType() == Type.PAWN) && ((whiteTurn && piece.y == 7) || (!whiteTurn && piece.y == 0))) {
+                    promotion(piece);
+                }
+                whiteTurn = !whiteTurn;
 
-            Piece piece = board.getPiece(finalRow, finalCol);
-            if ((piece.getType() == Type.PAWN) && ((whiteTurn && piece.y == 7) || (!whiteTurn && piece.y == 0))) {
-                promotion(piece);
             }
-            whiteTurn = !whiteTurn;
 
-        }
-        
-                        PrintStream _err = System.err;
-                System.setErr(new PrintStream(new OutputStream() {
-                    public void write(int b) {
-                    }
-                }));
-                if (isChecked()) {
-                    if (checkMate()) {
-                        System.setErr(_err);
-                        if (whiteTurn) {
+//            PrintStream _err = System.err;
+//            System.setErr(new PrintStream(new OutputStream() {
+//                public void write(int b) {
+//                }
+//            }));
+            if (isChecked()) {
+                if (checkMate()) {
+                    //System.setErr(_err);
+                    if (whiteTurn) {
 //                            System.out.println("CHECKMATE " + blackPlayer.name + " Wins!");
 //                            blackPlayer.won();
 //                            whitePlayer.lost();
-this.data.blackWins++;
-this.data.whiteLosses++;
-this.data.quitFlag= true;
-this.db.gameOver(data);
-    this.setChanged();
-                        } else {
+                        this.data.blackWins++;
+                        this.data.whiteLosses++;
+                        this.data.quitFlag = true;
+                        this.data.winner = this.data.bUsername;
+                        this.db.gameOver(data);
+                        this.setChanged();
+                        this.notifyObservers(data);
+                    } else {
 //                            System.out.println("CHECKMATE " + whitePlayer.name + " Wins!");
 //                            whitePlayer.won();
 //                            blackPlayer.lost();
-this.data.whiteWins++;
-this.data.blackLosses++;
-this.db.gameOver(data);
-this.data.quitFlag= true;
-this.setChanged();
-                        }
-                        this.over = true;
-                        //update leaderboard
-                        leaderboard.updateLeaderboard();
-                    } else {
-                        System.setErr(_err);
-
-                        System.err.println("You are checked");
+                        this.data.whiteWins++;
+                        this.data.blackLosses++;
+                        this.data.winner = this.data.wUsername;
+                        this.db.gameOver(data);
+                        this.data.quitFlag = true;
+                        this.setChanged();
+                        this.notifyObservers(data);
                     }
-                }
-                System.setErr(_err);
+                    this.over = true;
+                    //update leaderboard
+                    leaderboard.updateLeaderboard();
+                } else {
+                    //System.setErr(_err);
 
+                    //System.err.println("You are checked");
+                }
             }
-            //gameState.close();
-        
-    
+            //System.setErr(_err);
+        }
+       
+
+    }
+    //gameState.close();
 
     public boolean moveValid(int initRow, int initCol, int finalRow, int finalCol, boolean checking) {
 
@@ -277,19 +278,31 @@ this.setChanged();
         // invalid if the move origin or destination is outside the board
 
         if (initRow < 0 || initRow > 7 || initCol < 0 || initCol > 7 || finalRow < 0 || finalRow > 7 || finalCol < 0 || finalCol > 7) {
-            System.err.println("Move is outside of bounds");
+            //System.err.println("Move is outside of bounds");
+            if(!checking){
+                this.setChanged();
+                this.notifyObservers("Move is outside of bounds");
+            }
             return false;
         }
 
         // Invalid if piece does not exist
         if (board.getPiece(initRow, initCol) == null) {
-            System.err.println("No piece exists there");
+            //System.err.println("No piece exists there");
+            if(!checking){
+                this.setChanged();
+                this.notifyObservers("No piece exists there");
+            }
             return false;
         }
 
         // Invalid if player attempts to moves out of turn
         if (!checking && ((board.getPiece(initRow, initCol).colour == Colour.WHITE && !whiteTurn) || (board.getPiece(initRow, initCol).colour == Colour.BLACK && whiteTurn))) {
-            System.err.println("Wrong player");
+            //System.err.println("Wrong player");
+            if(!checking){
+                this.setChanged();
+                this.notifyObservers("Wrong player");
+            }
             return false;
         }
 
@@ -300,11 +313,20 @@ this.setChanged();
                 if (pawn.validTake(finalCol, finalRow)) {
                     take = true;
                 } else {
-                    System.err.println("Invalid type of move for piece type");
+                    //System.err.println("Invalid type of move for piece type");
+                    if(!checking){
+                this.setChanged();
+                this.notifyObservers("Invalid type of move for piece type");
+            }
+                    
                     return false;
                 }
             } else {
-                System.err.println("Invalid type of move for piece type");
+                //System.err.println("Invalid type of move for piece type");
+                if(!checking){
+                this.setChanged();
+                this.notifyObservers("Invalid type of move for piece type");
+            }
                 return false;
             }
         }
@@ -312,7 +334,11 @@ this.setChanged();
 
         //check path is clear
         if (!checkPath(take, initRow, initCol, finalRow, finalCol)) {
-            System.err.println("Piece in the way");
+            //System.err.println("Piece in the way");
+            if(!checking){
+                this.setChanged();
+                this.notifyObservers("Piece in the way");
+            }
             return false;
         }
 
@@ -323,7 +349,11 @@ this.setChanged();
 
         // invalid if the white lands on white
         if (board.getPiece(initRow, initCol).colour == board.getPiece(finalRow, finalCol).colour) {
-            System.err.println("One of your own pieces already occupies this square");
+            //System.err.println("One of your own pieces already occupies this square");
+            if(!checking){
+                this.setChanged();
+                this.notifyObservers("One of your own pieces already occupies this square");
+            }
             return false;
         }
         return true;
@@ -483,6 +513,11 @@ this.setChanged();
             }
 
         }
+    }
+
+    void leaderboard() {
+        this.db.leaderboard();
+        
     }
 
 }
