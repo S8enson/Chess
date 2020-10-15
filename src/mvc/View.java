@@ -28,6 +28,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -82,6 +83,10 @@ public class View extends JFrame implements Observer {
     private JButton nextButton = new JButton("Next");
     private JButton quitButton = new JButton("Quit");
     private JButton loginButton = new JButton("Log in");
+    private JButton bishopButton = new JButton("Bishop");
+    private JButton queenButton = new JButton("Queen");
+    private JButton rookButton = new JButton("Rook");
+    private JButton knightButton = new JButton("Knight");
 
     public JLabel wMessage = new JLabel("White Player Enter Details", JLabel.CENTER);
     public JLabel bMessage = new JLabel("Black Player Enter Details", JLabel.CENTER);
@@ -91,6 +96,7 @@ public class View extends JFrame implements Observer {
 
     private boolean started = false; // To identify if the game part starts.
     private JOptionPane frame;
+    private JDialog promotion; 
     
 
     /**
@@ -101,7 +107,19 @@ public class View extends JFrame implements Observer {
      * class. Go to Model.java for Step 2.
      */
     public View() {
-
+        promotion =  new JDialog(this, "Pawn Promotion");
+        promotion.setAlwaysOnTop(true);
+        promotion.setSize(300, 200);
+        promotion.setLocationRelativeTo(null);
+        promotion.getContentPane().setLayout(new BoxLayout(promotion.getContentPane(), BoxLayout.Y_AXIS));
+        promotion.add(new JLabel("Choose a piece to be promoted to"));
+        
+        promotion.add(queenButton);
+        promotion.add(rookButton);
+        promotion.add(knightButton);
+        promotion.add(bishopButton);
+        
+        //this.add(promotion);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800, 800);
         this.setResizable(false);
@@ -146,6 +164,7 @@ public class View extends JFrame implements Observer {
 
     public void home() {
         this.getContentPane().removeAll();
+        
         homePanel.setVisible(true);
         this.add(this.homePanel);
         this.revalidate();
@@ -155,6 +174,7 @@ public class View extends JFrame implements Observer {
 
     public void login() {
         this.getContentPane().removeAll();
+        
         userPanel.setVisible(true);
         this.add(this.userPanel);
         this.revalidate();
@@ -255,12 +275,28 @@ public class View extends JFrame implements Observer {
         return jPanel;
     }
 
-    public void setPieceString(String s, int x, int y) {
-        JLabel label = ((JLabel) ((JPanel) View.piecePanels[8 * (7 - x) + y].getComponent(0)).getComponent(0));
+    public void setPieceString(Board b) {
+        String s;
+            
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if(b.getPiece(i, j) == null){
+                    s = "";
+                    }else{
+                    s = b.getPiece(i, j).toString();
+                    }
+                    JLabel label = ((JLabel) ((JPanel) View.piecePanels[8 * (7 - i) + j].getComponent(0)).getComponent(0));
         label.setText(s);
+                }
+            }
+        
     }
 
     public void addActionListener(ActionListener listener) {
+        queenButton.addActionListener(listener);
+        rookButton.addActionListener(listener);
+        bishopButton.addActionListener(listener);
+        knightButton.addActionListener(listener);
         this.homeItem.addActionListener(listener);
         this.newGameItem.addActionListener(listener);
         this.leaderboardItem.addActionListener(listener);
@@ -309,10 +345,15 @@ public class View extends JFrame implements Observer {
 //        } else if (!this.started) { // If the game has not started, then start the game.
             //this.startQuiz(); // Change the interface of the frame.
             if(arg instanceof String){
+                if(arg == "PROMOTION"){
+                promotion();
+                }else{
             this.wrongMove((String)arg);
-            
+                }
             }else if(arg instanceof Data){
             this.gameOver(((Data) arg).winner);
+            }else if(arg instanceof Board){
+                setPieceString((Board)arg);
             }
             else{
             this.started = true;
@@ -363,5 +404,13 @@ this.leaderboard();
     error,
     "Error",
     JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void promotion() {
+        promotion.setVisible(true);
+
+    }
+    public void promoOver(){
+    promotion.setVisible(false);
     }
 }

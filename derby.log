@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Fri Oct 16 09:55:49 NZDT 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0175-2e0c-263b-00000f3a9800 
+Fri Oct 16 11:30:09 NZDT 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0175-2e62-813b-00000f2e5000 
 on database directory /Users/Sam/Desktop/UNI/2020/Sem 2/ENSE600/Ass2/Chess/ChessDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@4f8e5cde 
 Loaded from file:/Applications/NetBeans/glassfish-4.1.1/javadb/lib/derby.jar
 java.vendor=Oracle Corporation

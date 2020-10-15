@@ -47,6 +47,7 @@ public class Model extends Observable {
     static Player whitePlayer, blackPlayer;
     static Leaderboard leaderboard;
     private String invalidString;
+    public Piece lastPiece;
 
     /**
      * Step 2: Initialize the instance of Database in the constructor, and build
@@ -63,6 +64,7 @@ public class Model extends Observable {
         input = new Scanner(System.in);
         board = new Board();
         leaderboard = new Leaderboard();
+        
 
     }
 
@@ -74,7 +76,7 @@ public class Model extends Observable {
      */
     public void newGame() {
 
-        //this.move()
+        this.notifyObservers(board);
     }
 
     public void checkName(String wUsername, String bUsername) {
@@ -216,13 +218,18 @@ public class Model extends Observable {
             if (moveValid(initRow, initCol, finalRow, finalCol, false)) {
                 //gameState.print(move + "\n\n");
                 board.move(initRow, initCol, finalRow, finalCol);
-
-                Piece piece = board.getPiece(finalRow, finalCol);
-                if ((piece.getType() == Type.PAWN) && ((whiteTurn && piece.y == 7) || (!whiteTurn && piece.y == 0))) {
-                    promotion(piece);
+                this.setChanged();
+                this.notifyObservers(board);
+                lastPiece = board.getPiece(finalRow, finalCol);
+                if ((lastPiece.getType() == Type.PAWN) && ((whiteTurn && lastPiece.y == 7) || (!whiteTurn && lastPiece.y == 0))) {
+                    this.setChanged();
+                    this.notifyObservers("PROMOTION");
+                    //promotion(piece);
+                    
                 }
                 whiteTurn = !whiteTurn;
-
+                this.setChanged();
+                this.notifyObservers(board);
             }
 
 //            PrintStream _err = System.err;
@@ -254,6 +261,7 @@ public class Model extends Observable {
                         this.db.gameOver(data);
                         this.data.quitFlag = true;
                         this.setChanged();
+                        
                         this.notifyObservers(data);
                     }
                     this.over = true;
@@ -518,6 +526,11 @@ public class Model extends Observable {
     void leaderboard() {
         this.db.leaderboard();
         
+    }
+
+    void updateBoard() {
+        this.setChanged();
+                this.notifyObservers(board);
     }
 
 }

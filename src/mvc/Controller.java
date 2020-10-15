@@ -5,10 +5,12 @@
  */
 package mvc;
 
+import chess.Pieces.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JToggleButton;
+import static mvc.Model.board;
 
 /**
  *
@@ -56,7 +58,7 @@ public class Controller implements ActionListener {
            if(!wUsername.equals(bUsername)){
             this.model.checkName(wUsername, bUsername);
             this.view.game();
-            this.updateBoard();
+            this.model.newGame();
            }else{
            //errorsamenames
            this.view.errorMessage("Names Can't Be The Same!");
@@ -84,14 +86,7 @@ public class Controller implements ActionListener {
             this.view.leaderboard();
         } else if (command.equals("Quit")) { // Quit button
             //this.model.quitGame(); // Record user's current score.
-        } else if (command.equals("test")) { // Quit button
-            //this.model.newGame();
-            this.view.game();
-            this.updateBoard();
-            
-            //this.model.board.drawBoard(this.view.piecePanel.getGraphics());
-            // Record user's current score.
-        } else if (e.getSource() instanceof JToggleButton) {
+        }else if (e.getSource() instanceof JToggleButton) {
             if (first) {
                 start = ((JToggleButton) e.getSource()).getText();
                 first = false;
@@ -102,26 +97,54 @@ public class Controller implements ActionListener {
                 ((JToggleButton) e.getSource()).setSelected(false);
                 firstButton.setSelected(false);
                 this.model.move(start, end);
-                this.updateBoard();
+                //this.updateBoard();
             }
+        }
+        else if(command.equals("Queen")){
+            Piece piece = this.model.lastPiece;
+        Piece newPiece = new Queen(piece.x, piece.y, piece.colour);
+                board.squares[piece.y][piece.x].setPiece(newPiece);
+                this.model.updateBoard();
+                this.view.promoOver();
+        }
+        else if(command.equals("Bishop")){
+        Piece piece = this.model.lastPiece;
+        Piece newPiece = new Bishop(piece.x, piece.y, piece.colour);
+                board.squares[piece.y][piece.x].setPiece(newPiece);
+                this.model.updateBoard();
+                this.view.promoOver();
+        }
+        else if(command.equals("Rook")){
+        Piece piece = this.model.lastPiece;
+        Piece newPiece = new Rook(piece.x, piece.y, piece.colour);
+                board.squares[piece.y][piece.x].setPiece(newPiece);
+                this.model.updateBoard();
+                this.view.promoOver();
+        }
+        else if(command.equals("Knight")){
+        Piece piece = this.model.lastPiece;
+        Piece newPiece = new Knight(piece.x, piece.y, piece.colour);
+                board.squares[piece.y][piece.x].setPiece(newPiece);
+                this.model.updateBoard();
+                this.view.promoOver();
         }
 
     }
 
-    private void updateBoard() {
-        String s;
-            
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if(this.model.board.getPiece(i, j) == null){
-                    s = "";
-                    }else{
-                    s = this.model.board.getPiece(i, j).toString();
-                    }
-                    this.view.setPieceString(s, i, j);
-                }
-            }
-    }
+//    private void updateBoard() {
+//        String s;
+//            
+//            for (int i = 0; i < 8; i++) {
+//                for (int j = 0; j < 8; j++) {
+//                    if(this.model.board.getPiece(i, j) == null){
+//                    s = "";
+//                    }else{
+//                    s = this.model.board.getPiece(i, j).toString();
+//                    }
+//                    this.view.setPieceString(s, i, j);
+//                }
+//            }
+//    }
 
     private void resetModel() {
         this.model = new Model();
