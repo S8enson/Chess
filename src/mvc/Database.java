@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
 /**
  *
  * @author Shiqing Wu
@@ -61,12 +60,11 @@ public class Database {
      * @param password
      * @return data
      */
-    public Data checkName(String username, String password) {
+    public Data checkName(String wUsername, String wPassword, String bUsername, String bPassword) {
         Data data = new Data(); // Initialize an instance of Data.
         try {
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT userid, password, score FROM UserInfo "
-                    + "WHERE userid = '" + username + "'");
+            ResultSet rs = statement.executeQuery("SELECT userid, password, wins, losses FROM UserInfo " + "WHERE userid = '" + wUsername + "'");
             if (rs.next()) {
                 String pass = rs.getString("password");
                 System.out.println("***" + pass);
@@ -76,12 +74,16 @@ public class Database {
                  * password is correct, change the value of relating attributes
                  * of data. Otherwise, keep loginFlag as false.
                  */
-                if (password.compareTo(pass) == 0) {
-                    data.wins = rs.getInt("wins");
-                    data.losses = rs.getInt("losses");
-                    data.loginFlag = true;
+                if (wPassword.compareTo(pass) == 0) {
+
+                    data.whiteWins = rs.getInt("wins");
+                    data.whiteLosses = rs.getInt("losses");
+                    data.whiteLoginFlag = true;
+
                 } else {
-                    data.loginFlag = false;
+
+                    data.whiteLoginFlag = false;
+
                 }
             } else {
                 /**
@@ -91,10 +93,48 @@ public class Database {
                  */
                 System.out.println("no such user");
                 statement.executeUpdate("INSERT INTO UserInfo "
-                        + "VALUES('" + username + "', '" + password + "', 0, 0)");
-                data.wins = 0;
-                data.losses = 0;
-                data.loginFlag = true;
+                        + "VALUES('" + wUsername + "', '" + wPassword + "', 0, 0)");
+
+                data.whiteWins = 0;
+                data.whiteLosses = 0;
+                data.whiteLoginFlag = true;
+
+            }
+            rs = statement.executeQuery("SELECT userid, password, wins, losses FROM UserInfo " + "WHERE userid = '" + bUsername + "'");
+            if (rs.next()) {
+                String pass = rs.getString("password");
+                System.out.println("***" + pass);
+                System.out.println("found user");
+                /**
+                 * If the username exists in the USERINFO table, and the
+                 * password is correct, change the value of relating attributes
+                 * of data. Otherwise, keep loginFlag as false.
+                 */
+                if (bPassword.compareTo(pass) == 0) {
+
+                    data.blackWins = rs.getInt("wins");
+                    data.blackLosses = rs.getInt("losses");
+                    data.blackLoginFlag = true;
+
+                } else {
+
+                    data.blackLoginFlag = false;
+
+                }
+            } else {
+                /**
+                 * If the username does not exist in the USERINFO table, then
+                 * create a new account by using the inputted username and
+                 * password.
+                 */
+                System.out.println("no such user");
+                statement.executeUpdate("INSERT INTO UserInfo "
+                        + "VALUES('" + bUsername + "', '" + bPassword + "', 0, 0)");
+
+                data.blackWins = 0;
+                data.blackLosses = 0;
+                data.blackLoginFlag = true;
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
@@ -126,15 +166,16 @@ public class Database {
         return flag;
     }
 
-    public void quitGame(int wins, int losses, String username) {
-        Statement statement;
-        try {
-            statement = conn.createStatement();
-            statement.executeUpdate("UPDATE UserInfo SET wins=" + wins + ", losses=" + losses + " WHERE userid='" + username + "'");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
+//    public void quitGame(String username) {
+//        Statement statement;
+//        //data
+//        try {
+//            statement = conn.createStatement();
+//            statement.executeUpdate("UPDATE UserInfo SET wins=" + wins + ", losses=" + losses + " WHERE userid='" + username + "'");
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
 }

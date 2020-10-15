@@ -45,10 +45,14 @@ public class View extends JFrame implements Observer {
     BoardPanel boardPanel = new BoardPanel();
     JPanel gamePanel = new JPanel(new CardLayout());
     JPanel piecePanel = new JPanel();
-    private JLabel uName = new JLabel("Username: ");
-    private JLabel pWord = new JLabel("Password: ");
-    public JTextField unInput = new JTextField(10);
-    public JTextField pwInput = new JTextField(10);
+    private JLabel wUName = new JLabel("Username: ");
+    private JLabel wPWord = new JLabel("Password: ");
+    public JTextField wUNInput = new JTextField(10);
+    public JTextField wPWInput = new JTextField(10);
+    private JLabel bUName = new JLabel("Username: ");
+    private JLabel bPWord = new JLabel("Password: ");
+    public JTextField bUNInput = new JTextField(10);
+    public JTextField bPWInput = new JTextField(10);
     private JLabel wrongName = new JLabel("Wrong username or password!");
 
     public static JPanel[] piecePanels = new JPanel[64];
@@ -66,7 +70,8 @@ public class View extends JFrame implements Observer {
     private JButton quitButton = new JButton("Quit");
     private JButton loginButton = new JButton("Log in");
 
-    public JLabel message = new JLabel("White Player Enter Details", JLabel.CENTER);
+    public JLabel wMessage = new JLabel("White Player Enter Details", JLabel.CENTER);
+    public JLabel bMessage = new JLabel("Black Player Enter Details", JLabel.CENTER);
     public JTextField calcSolution = new JTextField(10);
     private Image homeBG;
     //private Graphics g;
@@ -86,11 +91,17 @@ public class View extends JFrame implements Observer {
         this.setSize(800, 800);
         this.setResizable(false);
         this.setLocationRelativeTo(null); // Make the frame located at the absolute center of the screen.
-        this.userPanel.add(message);
-        this.userPanel.add(uName);
-        this.userPanel.add(unInput);
-        this.userPanel.add(pWord);
-        this.userPanel.add(pwInput);
+        this.userPanel.add(wMessage);
+        this.userPanel.add(wUName);
+        this.userPanel.add(wUNInput);
+        this.userPanel.add(wPWord);
+        this.userPanel.add(wPWInput);
+        this.userPanel.add(bMessage);
+        this.userPanel.add(bUName);
+        this.userPanel.add(bUNInput);
+        this.userPanel.add(bPWord);
+        this.userPanel.add(bPWInput);
+        
         this.userPanel.add(loginButton);
 
         title.setPreferredSize(new Dimension(200, 200));
@@ -142,7 +153,7 @@ public class View extends JFrame implements Observer {
         this.repaint();
     }
 
-    public void test() {
+    public void game() {
         
         
         this.getContentPane().removeAll();
@@ -275,10 +286,15 @@ public class View extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         Data data = (Data) arg; // Obtain the instance of data.
-        if (!data.loginFlag) { // If loginFlage is false, then ask the user to input again.
-            this.unInput.setText("");
-            this.pwInput.setText("");
-            this.message.setText("Invalid username or password.");
+        if (!data.whiteLoginFlag) { // If loginFlage is false, then ask the user to input again.
+            this.wUNInput.setText("");
+            this.wPWInput.setText("");
+            this.wMessage.setText("Invalid username or password.");
+        }
+        else if (!data.blackLoginFlag) { // If loginFlage is false, then ask the user to input again.
+            this.bUNInput.setText("");
+            this.bPWInput.setText("");
+            this.bMessage.setText("Invalid username or password.");
         } else if (!this.started) { // If the game has not started, then start the game.
             //this.startQuiz(); // Change the interface of the frame.
             this.started = true;

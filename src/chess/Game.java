@@ -1,4 +1,4 @@
-//package chess;
+//package mvc;
 //
 //import mvc.Colour;
 //import mvc.Board;

@@ -22,6 +22,7 @@ public class Controller implements ActionListener {
     public JToggleButton firstButton;
     public String start;
     public String end;
+    public boolean white;
 
     /**
      * Step 4: Assign view and model to attributes in the constructor, and add
@@ -48,9 +49,16 @@ public class Controller implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand(); // Obtain the text displayed on the component.
         if (command.equals("Log in")) {// Login button
-            String username = this.view.unInput.getText(); // Obtain username.
-            String password = this.view.pwInput.getText(); // Obtain password.
-            this.model.checkName(username, password); // Pass above variables to model. Go to the checkName() of Model.java for step 6.
+            String wUsername = this.view.wUNInput.getText(); // Obtain username.
+            String wPassword = this.view.wPWInput.getText(); // Obtain password.
+            String bUsername = this.view.bUNInput.getText(); // Obtain username.
+            String bPassword = this.view.bPWInput.getText(); // Obtain password.
+            this.model.checkName(wUsername, wPassword, bUsername, bPassword); // Pass above variables to model. Go to the checkName() of Model.java for step 6.
+//            if(!white){
+//            this.view.game();
+//            this.updateBoard();
+//            }
+            white = !white;
         } else if (command.equals("New Game")) { // Next button
             // Step 8:
             // Go to the checkAnswer() and quitGame() of Model.java.
@@ -63,7 +71,7 @@ public class Controller implements ActionListener {
             //this.model.quitGame(); // Record user's current score.
         } else if (command.equals("test")) { // Quit button
             //this.model.newGame();
-            this.view.test();
+            this.view.game();
             this.updateBoard();
             
             //this.model.board.drawBoard(this.view.piecePanel.getGraphics());

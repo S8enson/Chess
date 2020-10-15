@@ -46,6 +46,8 @@ public class Model extends Observable {
     int initRow, initCol, finalRow, finalCol;
     static Player whitePlayer, blackPlayer;
     static Leaderboard leaderboard;
+    Data whiteData;
+    Data blackData;
 
     /**
      * Step 2: Initialize the instance of Database in the constructor, and build
@@ -73,52 +75,14 @@ public class Model extends Observable {
      */
     public void newGame() {
 
-//        Game game = new Game();
-//
-//        int numMoves = 0;
-//        game.play();
-                while (!this.over) {
+        Game game = new Game();
 
-                out = board.toString();
-                System.out.println(out);
-                gameState.print(out + "\n\n");
-
-                this.move();
-
-                PrintStream _err = System.err;
-                System.setErr(new PrintStream(new OutputStream() {
-                    public void write(int b) {
-                    }
-                }));
-                if (isChecked()) {
-                    if (checkMate()) {
-                        System.setErr(_err);
-                        if (whiteTurn) {
-                            System.out.println("CHECKMATE " + blackPlayer.name + " Wins!");
-                            blackPlayer.won();
-                            whitePlayer.lost();
-                        } else {
-                            System.out.println("CHECKMATE " + whitePlayer.name + " Wins!");
-                            whitePlayer.won();
-                            blackPlayer.lost();
-                        }
-                        this.over = true;
-                        //update leaderboard
-                        leaderboard.updateLeaderboard();
-                    } else {
-                        System.setErr(_err);
-
-                        System.err.println("You are checked");
-                    }
-                }
-                System.setErr(_err);
-
-            }
-
+        int numMoves = 0;
+        game.play();
 
     }
 
-    public void checkName(String username, String password) {
+    public void checkName(String wUsername, String wPassword, String bUsername, String bPassword) {
         this.username = username; // Store username
         /**
          * Compare username and password with that inside database. Go to
@@ -127,14 +91,14 @@ public class Model extends Observable {
          * Note: You should define attributes of Data before you go to Database
          * class.
          */
-        this.data = this.db.checkName(username, password);
+        this.data = this.db.checkName(wUsername, wPassword, bUsername, bPassword);
 
         /**
          * After you finish Step 7. Generate a new question if data.loginFlag is
          * true, otherwise do nothing.
          */
-        if (data.loginFlag) {
-            this.newQuestion();
+        if (data.whiteLoginFlag && data.blackLoginFlag) {
+            this.newGame();
         }
         this.setChanged(); // Essential. To mark this observable instance has been modified.
         /**
@@ -143,20 +107,20 @@ public class Model extends Observable {
          *
          * Go to update() of View.java for the next step.
          */
-        this.notifyObservers(this.data);
+        //this.notifyObservers(this.data);
     }
 
-    public void newQuestion() {
-        this.data.num1 = getNumber();
-        this.data.num2 = getNumber();
-        this.answer = this.data.num1 + this.data.num2; // Store the correct answer.
-    }
-
-    public int getNumber() {
-        Random generator = new Random();
-        int i = generator.nextInt(100);
-        return i;
-    }
+//    public void newQuestion() {
+//        this.data.num1 = getNumber();
+//        this.data.num2 = getNumber();
+//        this.answer = this.data.num1 + this.data.num2; // Store the correct answer.
+//    }
+//
+//    public int getNumber() {
+//        Random generator = new Random();
+//        int i = generator.nextInt(100);
+//        return i;
+//    }
 
     /**
      * Step 9: Define checkAnswer() and quitGame()
@@ -246,9 +210,7 @@ public class Model extends Observable {
 //
 //            }
 //            gameState.close();
-//        }else if (init.toLowerCase().equals("e")) {
-//                break;
-//            }
+//        }
 //    }
 
     public void move(String start, String end) {
