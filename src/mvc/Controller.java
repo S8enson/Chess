@@ -81,7 +81,7 @@ public class Controller implements ActionListener {
             
             this.resetModel();
             this.view.login(); // Check user's answer.
-        } else if (command.equals("Leaderboard")) { // Next button
+        } else if (command.equals("LeaderBoard")) { // Next button
             this.model.leaderboard();
             this.view.leaderboard();
         } else if (command.equals("Quit")) { // Quit button

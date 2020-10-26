@@ -62,8 +62,8 @@ public class Database {
      */
     public Data checkName(String wUsername, String bUsername) {
         Data data = new Data(); // Initialize an instance of Data.
-        data.wUsername=wUsername;
-        data.bUsername=bUsername;
+        data.wUsername = wUsername;
+        data.bUsername = bUsername;
         try {
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT userid, wins, losses FROM UserInfo " + "WHERE userid = '" + wUsername + "'");
@@ -78,9 +78,9 @@ public class Database {
                  */
 //                if (wPassword.compareTo(pass) == 0) {
 
-                    data.whiteWins = rs.getInt("wins");
-                    data.whiteLosses = rs.getInt("losses");
-                    //data.whiteLoginFlag = true;
+                data.whiteWins = rs.getInt("wins");
+                data.whiteLosses = rs.getInt("losses");
+                //data.whiteLoginFlag = true;
 
 //                } else {
 //
@@ -105,9 +105,8 @@ public class Database {
             rs = statement.executeQuery("SELECT userid, wins, losses FROM UserInfo " + "WHERE userid = '" + bUsername + "'");
             if (rs.next()) {
 
-
-                    data.blackWins = rs.getInt("wins");
-                    data.blackLosses = rs.getInt("losses");
+                data.blackWins = rs.getInt("wins");
+                data.blackLosses = rs.getInt("losses");
 
             } else {
                 /**
@@ -154,12 +153,10 @@ public class Database {
         return flag;
     }
 
-
-    
-    public void gameOver(Data data){
+    public void gameOver(Data data) {
         Statement statement;
-   
-                try {
+
+        try {
             statement = conn.createStatement();
             statement.executeUpdate("UPDATE UserInfo SET wins=" + data.whiteWins + ", losses=" + data.whiteLosses + " WHERE userid='" + data.wUsername + "'");
             statement.executeUpdate("UPDATE UserInfo SET wins=" + data.blackWins + ", losses=" + data.blackLosses + " WHERE userid='" + data.bUsername + "'");
@@ -167,18 +164,22 @@ public class Database {
         } catch (SQLException ex) {
             //Logger.getLogger(model.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
 
     }
 
-    public void leaderboard() {
-        Statement statement;
+    public ResultSet leaderboard() {
         
-               try{ statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT userid, wins, losses FROM UserInfo ORDER BY wins desc");
-               }catch(SQLException ex){
-               
-               }
-               //print out rows
+        
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM UserInfo ORDER BY wins DESC, losses");
+            
+            
+            return rs;
+           
+        } catch (SQLException ex) {
+
+        }
+        return null;
     }
 }

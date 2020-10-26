@@ -107,107 +107,7 @@ public class Model extends Observable {
         //this.notifyObservers(this.data);
     }
 
-//    public void newQuestion() {
-//        this.data.num1 = getNumber();
-//        this.data.num2 = getNumber();
-//        this.answer = this.data.num1 + this.data.num2; // Store the correct answer.
-//    }
-//
-//    public int getNumber() {
-//        Random generator = new Random();
-//        int i = generator.nextInt(100);
-//        return i;
-//    }
-    /**
-     * Step 9: Define checkAnswer() and quitGame()
-     *
-     * After that, back to update() of View to complete remaining part.
-     *
-     * @param answer
-     */
-//    public void checkAnswer(String answer) {
-//        if (answer.equals(this.answer + "")) {
-//            data.currentScore += 10;
-//        } else {
-//            data.currentScore -= 10;
-//        }
-//        this.newQuestion(); // Generate a new question for user.
-//        this.setChanged(); 
-//        this.notifyObservers(this.data);
-//    }
-//    public void quitGame() {
-//        /**
-//         * Update data in the database. Go to quitGame() of Database.java for a
-//         * fast check.
-//         */
-//        //this.db.quitGame(this.data.currentScore, this.username); 
-//        this.data.quitFlag = true; // Mark quitFlag as false.
-//        this.setChanged();
-//        this.notifyObservers(this.data);
-//    }
-//
-//    void login() {
-//
-//    }
-//
-//    public void play() {
-//        while (true) {
-//            // Asks for input
-////            System.out.println("Type G to play, L to view leaderboard or E to exit:");
-////            String init = input.nextLine();
-////            if (init.toLowerCase().equals("l")) {
-////                leaderboard.printLeaderboard();
-////            } else if (init.toLowerCase().equals("g")) {
-////
-////                System.out.println("Beginning Game!\n\nEnter exit at anytime to stop the program.\n");
-////                this.getPlayers();
-//            try {
-//                gameState = new PrintWriter(new FileOutputStream(whitePlayer.name + blackPlayer.name + "gamelog.txt", true));
-//            } catch (FileNotFoundException e) {
-//            }
-//            gameState.print("\n " + java.time.LocalDateTime.now() + "\n");
-//            System.out.println("Input Move in Format StartingColRow EndingColRow, eg B2 B3\n");
-//            String out = "";
-//            while (!this.over) {
-//
-//                out = board.toString();
-//                System.out.println(out);
-//                gameState.print(out + "\n\n");
-//
-//                this.move();
-//
-//                PrintStream _err = System.err;
-//                System.setErr(new PrintStream(new OutputStream() {
-//                    public void write(int b) {
-//                    }
-//                }));
-//                if (isChecked()) {
-//                    if (checkMate()) {
-//                        System.setErr(_err);
-//                        if (whiteTurn) {
-//                            System.out.println("CHECKMATE " + blackPlayer.name + " Wins!");
-//                            blackPlayer.won();
-//                            whitePlayer.lost();
-//                        } else {
-//                            System.out.println("CHECKMATE " + whitePlayer.name + " Wins!");
-//                            whitePlayer.won();
-//                            blackPlayer.lost();
-//                        }
-//                        this.over = true;
-//                        //update leaderboard
-//                        leaderboard.updateLeaderboard();
-//                    } else {
-//                        System.setErr(_err);
-//
-//                        System.err.println("You are checked");
-//                    }
-//                }
-//                System.setErr(_err);
-//
-//            }
-//            gameState.close();
-//        }
-//    }
+
     public void move(String start, String end) {
         if (!data.quitFlag) {
             initRow = start.charAt(1) - '1';
@@ -524,7 +424,8 @@ public class Model extends Observable {
     }
 
     void leaderboard() {
-        this.db.leaderboard();
+        this.setChanged();
+                this.notifyObservers(this.db.leaderboard());
         
     }
 
