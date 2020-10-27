@@ -5,8 +5,7 @@
  */
 package mvc;
 
-//import chess.Game;
-//import static chess.Game.board;
+
 import chess.Leaderboard;
 import chess.Pieces.Bishop;
 import chess.Pieces.Knight;
@@ -25,10 +24,7 @@ import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
 
-/**
- *
- * @author Shiqing Wu
- */
+
 public class Model extends Observable {
 
     public Database db;
@@ -49,12 +45,7 @@ public class Model extends Observable {
     private String invalidString;
     public Piece lastPiece;
 
-    /**
-     * Step 2: Initialize the instance of Database in the constructor, and build
-     * the connection between the program and the database.
-     *
-     * Go to Database.java for Step 3.
-     */
+
     public Model() {
         this.db = new Database();
         this.db.dbsetup();
@@ -68,12 +59,7 @@ public class Model extends Observable {
 
     }
 
-    /**
-     * Step 6:
-     *
-     * @param username
-     * @param password
-     */
+
     public void newGame() {
 
         this.notifyObservers(board);
@@ -81,30 +67,10 @@ public class Model extends Observable {
 
     public void checkName(String wUsername, String bUsername) {
         this.username = username; // Store username
-        /**
-         * Compare username and password with that inside database. Go to
-         * checkName() of Database.java.
-         *
-         * Note: You should define attributes of Data before you go to Database
-         * class.
-         */
+
         this.data = this.db.checkName(wUsername, bUsername);
 
-        /**
-         * After you finish Step 7. Generate a new question if data.loginFlag is
-         * true, otherwise do nothing.
-         */
-//        if (data.whiteLoginFlag && data.blackLoginFlag) {
-//            this.newGame();
-//        }
-        this.setChanged(); // Essential. To mark this observable instance has been modified.
-        /**
-         * Pass data to Observers. Here, the observer is view. notifyObservers()
-         * would invoke update() of View automatically.
-         *
-         * Go to update() of View.java for the next step.
-         */
-        //this.notifyObservers(this.data);
+        this.setChanged(); 
     }
 
 
@@ -127,17 +93,7 @@ public class Model extends Observable {
                     //promotion(piece);
                     
                 }
-                whiteTurn = !whiteTurn;
-                this.setChanged();
-                this.notifyObservers(board);
-            }
-
-//            PrintStream _err = System.err;
-//            System.setErr(new PrintStream(new OutputStream() {
-//                public void write(int b) {
-//                }
-//            }));
-            if (isChecked()) {
+                if (isChecked()) {
                 if (checkMate()) {
                     //System.setErr(_err);
                     if (whiteTurn) {
@@ -151,6 +107,7 @@ public class Model extends Observable {
                         this.db.gameOver(data);
                         this.setChanged();
                         this.notifyObservers(data);
+                        this.leaderboard();
                     } else {
 //                            System.out.println("CHECKMATE " + whitePlayer.name + " Wins!");
 //                            whitePlayer.won();
@@ -163,16 +120,70 @@ public class Model extends Observable {
                         this.setChanged();
                         
                         this.notifyObservers(data);
+                        this.leaderboard();
                     }
                     this.over = true;
                     //update leaderboard
                     leaderboard.updateLeaderboard();
                 } else {
                     //System.setErr(_err);
-
+                    board = current;
+                    this.setChanged();
+                    this.notifyObservers(board);
+                    this.setChanged();
+                    this.notifyObservers("You are checked");
                     //System.err.println("You are checked");
                 }
+            } else{
+                whiteTurn = !whiteTurn;
+                this.setChanged();
+                this.notifyObservers(board);
+                }
             }
+
+//            PrintStream _err = System.err;
+//            System.setErr(new PrintStream(new OutputStream() {
+//                public void write(int b) {
+//                }
+//            }));
+//            if (isChecked()) {
+//                if (checkMate()) {
+//                    //System.setErr(_err);
+//                    if (whiteTurn) {
+////                            System.out.println("CHECKMATE " + blackPlayer.name + " Wins!");
+////                            blackPlayer.won();
+////                            whitePlayer.lost();
+//                        this.data.blackWins++;
+//                        this.data.whiteLosses++;
+//                        this.data.quitFlag = true;
+//                        this.data.winner = this.data.bUsername;
+//                        this.db.gameOver(data);
+//                        this.setChanged();
+//                        this.notifyObservers(data);
+//                        this.leaderboard();
+//                    } else {
+////                            System.out.println("CHECKMATE " + whitePlayer.name + " Wins!");
+////                            whitePlayer.won();
+////                            blackPlayer.lost();
+//                        this.data.whiteWins++;
+//                        this.data.blackLosses++;
+//                        this.data.winner = this.data.wUsername;
+//                        this.db.gameOver(data);
+//                        this.data.quitFlag = true;
+//                        this.setChanged();
+//                        
+//                        this.notifyObservers(data);
+//                        this.leaderboard();
+//                    }
+//                    this.over = true;
+//                    //update leaderboard
+//                    leaderboard.updateLeaderboard();
+//                } else {
+//                    //System.setErr(_err);
+//
+//                    //System.err.println("You are checked");
+//                }
+//            }
             //System.setErr(_err);
         }
        
@@ -186,7 +197,7 @@ public class Model extends Observable {
         // invalid if the move origin or destination is outside the board
 
         if (initRow < 0 || initRow > 7 || initCol < 0 || initCol > 7 || finalRow < 0 || finalRow > 7 || finalCol < 0 || finalCol > 7) {
-            //System.err.println("Move is outside of bounds");
+            
             if(!checking){
                 this.setChanged();
                 this.notifyObservers("Move is outside of bounds");
@@ -196,7 +207,7 @@ public class Model extends Observable {
 
         // Invalid if piece does not exist
         if (board.getPiece(initRow, initCol) == null) {
-            //System.err.println("No piece exists there");
+            
             if(!checking){
                 this.setChanged();
                 this.notifyObservers("No piece exists there");
@@ -206,7 +217,7 @@ public class Model extends Observable {
 
         // Invalid if player attempts to moves out of turn
         if (!checking && ((board.getPiece(initRow, initCol).colour == Colour.WHITE && !whiteTurn) || (board.getPiece(initRow, initCol).colour == Colour.BLACK && whiteTurn))) {
-            //System.err.println("Wrong player");
+            
             if(!checking){
                 this.setChanged();
                 this.notifyObservers("Wrong player");
@@ -221,7 +232,7 @@ public class Model extends Observable {
                 if (pawn.validTake(finalCol, finalRow)) {
                     take = true;
                 } else {
-                    //System.err.println("Invalid type of move for piece type");
+                    
                     if(!checking){
                 this.setChanged();
                 this.notifyObservers("Invalid type of move for piece type");
@@ -230,7 +241,7 @@ public class Model extends Observable {
                     return false;
                 }
             } else {
-                //System.err.println("Invalid type of move for piece type");
+                
                 if(!checking){
                 this.setChanged();
                 this.notifyObservers("Invalid type of move for piece type");
@@ -242,7 +253,7 @@ public class Model extends Observable {
 
         //check path is clear
         if (!checkPath(take, initRow, initCol, finalRow, finalCol)) {
-            //System.err.println("Piece in the way");
+           
             if(!checking){
                 this.setChanged();
                 this.notifyObservers("Piece in the way");
@@ -257,7 +268,7 @@ public class Model extends Observable {
 
         // invalid if the white lands on white
         if (board.getPiece(initRow, initCol).colour == board.getPiece(finalRow, finalCol).colour) {
-            //System.err.println("One of your own pieces already occupies this square");
+            
             if(!checking){
                 this.setChanged();
                 this.notifyObservers("One of your own pieces already occupies this square");
@@ -298,13 +309,13 @@ public class Model extends Observable {
 
     public boolean checkMate() {
         Colour colour;
-        //String name;
+        
         if (whiteTurn) {
             colour = Colour.WHITE;
-            //name = blackPlayer.name;
+            
         } else {
             colour = Colour.BLACK;
-            //name = whitePlayer.name;
+            
         }
         Board current;
 
@@ -394,34 +405,34 @@ public class Model extends Observable {
     }
 
     // promotes pawn to a queen, rook, bishop or knight
-    public void promotion(Piece piece) {
-        System.out.println("What piece would you like to be promoted to?\n type Q for queen, R for rook, K for knight or B for bishop");
-        Piece newPiece;
-        while (true) {
-            String newType = input.nextLine().toLowerCase();
-            if (newType.equals("q")) {
-                newPiece = new Queen(piece.x, piece.y, piece.colour);
-                board.squares[piece.y][piece.x].setPiece(newPiece);
-                return;
-            } else if (newType.equals("r")) {
-                newPiece = new Rook(piece.x, piece.y, piece.colour);
-                board.squares[piece.y][piece.x].setPiece(newPiece);
-                return;
-            } else if (newType.equals("k")) {
-                newPiece = new Knight(piece.x, piece.y, piece.colour);
-                board.squares[piece.y][piece.x].setPiece(newPiece);
-                return;
-            } else if (newType.equals("b")) {
-                newPiece = new Bishop(piece.x, piece.y, piece.colour);
-                board.squares[piece.y][piece.x].setPiece(newPiece);
-                return;
-            } else {
-                System.err.println("Invalid input");
-                return;
-            }
-
-        }
-    }
+//    public void promotion(Piece piece) {
+//        System.out.println("What piece would you like to be promoted to?\n type Q for queen, R for rook, K for knight or B for bishop");
+//        Piece newPiece;
+//        while (true) {
+//            String newType = input.nextLine().toLowerCase();
+//            if (newType.equals("q")) {
+//                newPiece = new Queen(piece.x, piece.y, piece.colour);
+//                board.squares[piece.y][piece.x].setPiece(newPiece);
+//                return;
+//            } else if (newType.equals("r")) {
+//                newPiece = new Rook(piece.x, piece.y, piece.colour);
+//                board.squares[piece.y][piece.x].setPiece(newPiece);
+//                return;
+//            } else if (newType.equals("k")) {
+//                newPiece = new Knight(piece.x, piece.y, piece.colour);
+//                board.squares[piece.y][piece.x].setPiece(newPiece);
+//                return;
+//            } else if (newType.equals("b")) {
+//                newPiece = new Bishop(piece.x, piece.y, piece.colour);
+//                board.squares[piece.y][piece.x].setPiece(newPiece);
+//                return;
+//            } else {
+//                System.err.println("Invalid input");
+//                return;
+//            }
+//
+//        }
+//    }
 
     void leaderboard() {
         this.setChanged();
