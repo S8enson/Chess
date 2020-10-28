@@ -35,7 +35,7 @@ public class ModelTest {
     @Before
     public void setUp() {
         model = new Model();
-        model.whiteTurn = false;
+        
     }
     
     @After
