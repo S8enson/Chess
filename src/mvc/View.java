@@ -330,7 +330,9 @@ public class View extends JFrame implements Observer {
         if (arg instanceof String) {
             if (arg == "PROMOTION") {
                 promotion();
-            } else {
+            } else if(arg == "You are checked"){
+            this.checkNotice((String)arg);
+            }else {
                 this.wrongMove((String) arg);
             }
         } else if (arg instanceof Data) {
@@ -408,5 +410,12 @@ public class View extends JFrame implements Observer {
 
         }
 
+    }
+
+    private void checkNotice(String s) {
+                JOptionPane.showMessageDialog(frame,
+                s,
+                "Attention!",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 }

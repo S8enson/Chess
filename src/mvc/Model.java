@@ -81,9 +81,19 @@ public class Model extends Observable {
             finalRow = end.charAt(1) - '1';
             finalCol = end.charAt(0) - 'A';
             Board current = new Board(board);
+
             if (moveValid(initRow, initCol, finalRow, finalCol, false)) {
                 //gameState.print(move + "\n\n");
                 board.move(initRow, initCol, finalRow, finalCol);
+                
+                if(isChecked()){
+                    whiteTurn = !whiteTurn;
+                board = new Board(current);
+                this.setChanged();
+                this.notifyObservers(board);
+                this.setChanged();
+                this.notifyObservers("You are checked");
+                }else{
                 this.setChanged();
                 this.notifyObservers(board);
                 lastPiece = board.getPiece(finalRow, finalCol);
@@ -93,9 +103,54 @@ public class Model extends Observable {
                     
                     
                 }
-                if (isChecked()) {
-                if (checkMate()) {
-                    //System.setErr(_err);
+                
+//                if (isChecked()) {
+//                if (checkMate()) {
+//                    //System.setErr(_err);
+//                    if (whiteTurn) {
+//
+//                        this.data.blackWins++;
+//                        this.data.whiteLosses++;
+//                        this.data.quitFlag = true;
+//                        this.data.winner = this.data.bUsername;
+//                        this.db.gameOver(data);
+//                        this.setChanged();
+//                        this.notifyObservers(data);
+//                        this.leaderboard();
+//                    } else {
+//
+//                        this.data.whiteWins++;
+//                        this.data.blackLosses++;
+//                        this.data.winner = this.data.wUsername;
+//                        this.db.gameOver(data);
+//                        this.data.quitFlag = true;
+//                        this.setChanged();
+//                        
+//                        this.notifyObservers(data);
+//                        this.leaderboard();
+//                    }
+//                    this.over = true;
+//                    
+//                } else {
+//                    
+//                    board = current;
+//                    this.setChanged();
+//                    this.notifyObservers(board);
+//                    this.setChanged();
+//                    this.notifyObservers("You are checked");
+//                    
+//                }
+//            } else{
+                //whiteTurn = !whiteTurn;
+                this.setChanged();
+                this.notifyObservers(board);
+                }
+   //             }
+   whiteTurn = !whiteTurn;
+                current = new Board(board);
+                
+                            if (isChecked()&&checkMate()) {
+                
                     if (whiteTurn) {
 
                         this.data.blackWins++;
@@ -120,20 +175,8 @@ public class Model extends Observable {
                     }
                     this.over = true;
                     
-                } else {
-                    
-                    board = current;
-                    this.setChanged();
-                    this.notifyObservers(board);
-                    this.setChanged();
-                    this.notifyObservers("You are checked");
-                    
                 }
-            } else{
-                whiteTurn = !whiteTurn;
-                this.setChanged();
-                this.notifyObservers(board);
-                }
+            board = new Board(current);
             }
 
 
