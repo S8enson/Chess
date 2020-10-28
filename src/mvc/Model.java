@@ -103,49 +103,11 @@ public class Model extends Observable {
                     
                     
                 }
-                
-//                if (isChecked()) {
-//                if (checkMate()) {
-//                    //System.setErr(_err);
-//                    if (whiteTurn) {
-//
-//                        this.data.blackWins++;
-//                        this.data.whiteLosses++;
-//                        this.data.quitFlag = true;
-//                        this.data.winner = this.data.bUsername;
-//                        this.db.gameOver(data);
-//                        this.setChanged();
-//                        this.notifyObservers(data);
-//                        this.leaderboard();
-//                    } else {
-//
-//                        this.data.whiteWins++;
-//                        this.data.blackLosses++;
-//                        this.data.winner = this.data.wUsername;
-//                        this.db.gameOver(data);
-//                        this.data.quitFlag = true;
-//                        this.setChanged();
-//                        
-//                        this.notifyObservers(data);
-//                        this.leaderboard();
-//                    }
-//                    this.over = true;
-//                    
-//                } else {
-//                    
-//                    board = current;
-//                    this.setChanged();
-//                    this.notifyObservers(board);
-//                    this.setChanged();
-//                    this.notifyObservers("You are checked");
-//                    
-//                }
-//            } else{
-                //whiteTurn = !whiteTurn;
+
                 this.setChanged();
                 this.notifyObservers(board);
                 }
-   //             }
+
    whiteTurn = !whiteTurn;
                 current = new Board(board);
                 
