@@ -6,7 +6,7 @@
 package mvc;
 
 
-import chess.Leaderboard;
+
 import chess.Pieces.Bishop;
 import chess.Pieces.Knight;
 import chess.Pieces.Pawn;
@@ -40,8 +40,8 @@ public class Model extends Observable {
     static PrintWriter gameState;
     String move;
     int initRow, initCol, finalRow, finalCol;
-    static Player whitePlayer, blackPlayer;
-    static Leaderboard leaderboard;
+    
+    
     private String invalidString;
     public Piece lastPiece;
 
@@ -54,7 +54,7 @@ public class Model extends Observable {
         whiteTurn = true;
         input = new Scanner(System.in);
         board = new Board();
-        leaderboard = new Leaderboard();
+        
         
 
     }
@@ -90,16 +90,14 @@ public class Model extends Observable {
                 if ((lastPiece.getType() == Type.PAWN) && ((whiteTurn && lastPiece.y == 7) || (!whiteTurn && lastPiece.y == 0))) {
                     this.setChanged();
                     this.notifyObservers("PROMOTION");
-                    //promotion(piece);
+                    
                     
                 }
                 if (isChecked()) {
                 if (checkMate()) {
                     //System.setErr(_err);
                     if (whiteTurn) {
-//                            System.out.println("CHECKMATE " + blackPlayer.name + " Wins!");
-//                            blackPlayer.won();
-//                            whitePlayer.lost();
+
                         this.data.blackWins++;
                         this.data.whiteLosses++;
                         this.data.quitFlag = true;
@@ -109,9 +107,7 @@ public class Model extends Observable {
                         this.notifyObservers(data);
                         this.leaderboard();
                     } else {
-//                            System.out.println("CHECKMATE " + whitePlayer.name + " Wins!");
-//                            whitePlayer.won();
-//                            blackPlayer.lost();
+
                         this.data.whiteWins++;
                         this.data.blackLosses++;
                         this.data.winner = this.data.wUsername;
@@ -123,16 +119,15 @@ public class Model extends Observable {
                         this.leaderboard();
                     }
                     this.over = true;
-                    //update leaderboard
-                    leaderboard.updateLeaderboard();
+                    
                 } else {
-                    //System.setErr(_err);
+                    
                     board = current;
                     this.setChanged();
                     this.notifyObservers(board);
                     this.setChanged();
                     this.notifyObservers("You are checked");
-                    //System.err.println("You are checked");
+                    
                 }
             } else{
                 whiteTurn = !whiteTurn;
