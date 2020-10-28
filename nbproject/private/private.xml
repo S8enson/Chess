@@ -5,8 +5,12 @@
         <group>
             <file>file:/Users/Sam/Desktop/UNI/2020/Sem%202/ENSE600/Ass2/Chess/src/mvc/Controller.java</file>
             <file>file:/Users/Sam/Desktop/UNI/2020/Sem%202/ENSE600/Ass2/Chess/src/mvc/Database.java</file>
-            <file>file:/Users/Sam/Desktop/UNI/2020/Sem%202/ENSE600/Ass2/Chess/src/mvc/Leaderboard.java</file>
+            <file>file:/Users/Sam/Desktop/UNI/2020/Sem%202/ENSE600/Ass2/Chess/src/mvc/BoardPanel.java</file>
+            <file>file:/Users/Sam/Desktop/UNI/2020/Sem%202/ENSE600/Ass2/Chess/src/mvc/Colour.java</file>
             <file>file:/Users/Sam/Desktop/UNI/2020/Sem%202/ENSE600/Ass2/Chess/src/mvc/View.java</file>
+            <file>file:/Users/Sam/Desktop/UNI/2020/Sem%202/ENSE600/Ass2/Chess/src/mvc/Board.java</file>
+            <file>file:/Users/Sam/Desktop/UNI/2020/Sem%202/ENSE600/Ass2/Chess/src/mvc/Data.java</file>
+            <file>file:/Users/Sam/Desktop/UNI/2020/Sem%202/ENSE600/Ass2/Chess/src/mvc/Main.java</file>
             <file>file:/Users/Sam/Desktop/UNI/2020/Sem%202/ENSE600/Ass2/Chess/src/mvc/Model.java</file>
         </group>
     </open-files>

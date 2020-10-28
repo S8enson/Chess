@@ -5,20 +5,16 @@
  */
 package mvc;
 
-/**
- *
- * @author Shiqing Wu
- */
+
 public class Data {
-//    boolean whiteLoginFlag = false; // Check if the user successfully login the system.
-//    boolean blackLoginFlag = false;
+
     String wUsername;
     String bUsername;
     String winner = "";
     boolean quitFlag = false; // Check if the user quit the system.
-    int whiteWins = 0; // Store user's cumulative scores.
+    int whiteWins = 0; 
     int whiteLosses = 0;
-    int blackWins = 0; // Store user's cumulative scores.
+    int blackWins = 0;
     int blackLosses = 0;
     
     

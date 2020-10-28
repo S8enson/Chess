@@ -5,21 +5,9 @@
  */
 package mvc;
 
-/**
- *
- * @author Shiqing Wu
- */
 
 public class Main {
-    /**
-     * Preparation:
-     * Create Controller, Model, View, Database and Data class first.
-     * The View class should extend JFrame and implement Observer.
-     * The Model class should extend Observable.
-     * The Controller should implement ActionListener.
-     * 
-     * Go to View.java for Step 1.
-     */
+
     public static void main(String[] args) {
         View view = new View();
         Model model = new Model();

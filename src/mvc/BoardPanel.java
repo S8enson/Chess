@@ -49,35 +49,35 @@ public class BoardPanel extends JPanel {
             for (int j = 0; j < 8; j++) {
                 s = Character.toString((char)(j+65))+(8-i);
                 button = new JToggleButton(s);
-                //button.seti
+                
                 if (i % 2 == 1) {
                     if (j % 2 == 0) {
-                        //g.setColor(light);
+                        
                         button.setBackground(dark);
                     }
                     else{
-                    //g.setColor(dark);
+                    
                     button.setBackground(light);
                     }
                 }
                 else{
                 if (j % 2 == 0) {
-                        //g.setColor(dark);
+                        
                         button.setBackground(light);
                     }
                 else{
-                //g.setColor(light);
+                
                 button.setBackground(dark);
                 }
                 }
-                //g.fillRect(20 + 40*i,20 + 40*j, 40, 40);
+                
                 button.setOpaque(true);
                 button.setBorderPainted(false);
                 
                 this.add(button);
                 buttons[i*j]=button;
                 
-//              this.button.addActionListener(listener);
+
             }
         }
     
@@ -87,41 +87,5 @@ public class BoardPanel extends JPanel {
     }
 
 
-//    @Override
-//    public void paintComponent(Graphics g) {
-//        super.paintComponent(g);
-//
-//                Color light = new Color(255, 223, 158);
-//        Color dark = new Color(138, 101, 54);
-//        JButton button;
-//        for (int i = 0; i < 8; i++) {
-//            for (int j = 0; j < 8; j++) {
-//                button = new JButton();
-//                if (i % 2 == 1) {
-//                    if (j % 2 == 0) {
-//                        //g.setColor(light);
-//                        button.setBackground(light);
-//                    }
-//                    else{
-//                    //g.setColor(dark);
-//                    button.setBackground(dark);
-//                    }
-//                }
-//                else{
-//                if (j % 2 == 0) {
-//                        //g.setColor(dark);
-//                        button.setBackground(dark);
-//                    }
-//                else{
-//                //g.setColor(light);
-//                button.setBackground(light);
-//                }
-//                }
-//                //g.fillRect(20 + 40*i,20 + 40*j, 40, 40);
-//                this.add(button);
-//            }
-//        }
-//        this.setLayout(new GridLayout(8, 8));
-//    }
 
 }

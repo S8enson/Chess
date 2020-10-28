@@ -12,10 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JToggleButton;
 import static mvc.Model.board;
 
-/**
- *
- * @author Shiqing Wu
- */
+
 public class Controller implements ActionListener {
 
     public View view;
@@ -26,13 +23,7 @@ public class Controller implements ActionListener {
     public String end;
     public boolean white;
 
-    /**
-     * Step 4: Assign view and model to attributes in the constructor, and add
-     * ActionListener(this) to the instance of View.
-     *
-     * @param view
-     * @param model
-     */
+
     public Controller(View view, Model model) {
         this.view = view;
         this.model = model;
@@ -40,52 +31,30 @@ public class Controller implements ActionListener {
         first = true;
     }
 
-    /**
-     * Step 5: Define ActionEvents based on the text displayed on the each
-     * button. Note: You must change the property of relating components to
-     * public for external access.
-     *
-     * @param e
-     */
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand(); // Obtain the text displayed on the component.
         if (command.equals("Log in")) {// Login button
             String wUsername = this.view.wUNInput.getText(); // Obtain username.
-            //String wPassword = this.view.wPWInput.getText(); // Obtain password.
+           
             String bUsername = this.view.bUNInput.getText(); // Obtain username.
-           // String bPassword = this.view.bPWInput.getText(); // Obtain password.
+           
            if(!wUsername.equals(bUsername)){
             this.model.checkName(wUsername, bUsername);
             this.view.game();
             this.model.newGame();
            }else{
-           //errorsamenames
            this.view.errorMessage("Names Can't Be The Same!");
-           }// Pass above variables to model. Go to the checkName() of Model.java for step 6.
-//            if(!white){
-//            this.view.game();
-//            this.updateBoard();
-//            }
-            //white = !white;
-        } else if (command.equals("Home")) { // Next button
-            // Step 8:
-            // Go to the checkAnswer() and quitGame() of Model.java.
-            
-            
-            
-            this.view.home(); // Check user's answer.
-        }else if (command.equals("New Game")) { // Next button
-            // Step 8:
-            // Go to the checkAnswer() and quitGame() of Model.java.
-            
+           }
+        } else if (command.equals("Home")) { 
+            this.view.home(); 
+        }else if (command.equals("New Game")) { 
             this.resetModel();
-            this.view.login(); // Check user's answer.
-        } else if (command.equals("LeaderBoard")) { // Next button
+            this.view.login(); 
+        } else if (command.equals("LeaderBoard")) { 
             this.model.leaderboard();
             this.view.leaderboard();
-        } else if (command.equals("Quit")) { // Quit button
-            //this.model.quitGame(); // Record user's current score.
         }else if (e.getSource() instanceof JToggleButton) {
             if (first) {
                 start = ((JToggleButton) e.getSource()).getText();
@@ -97,7 +66,7 @@ public class Controller implements ActionListener {
                 ((JToggleButton) e.getSource()).setSelected(false);
                 firstButton.setSelected(false);
                 this.model.move(start, end);
-                //this.updateBoard();
+                
             }
         }
         else if(command.equals("Queen")){
@@ -131,20 +100,7 @@ public class Controller implements ActionListener {
 
     }
 
-//    private void updateBoard() {
-//        String s;
-//            
-//            for (int i = 0; i < 8; i++) {
-//                for (int j = 0; j < 8; j++) {
-//                    if(this.model.board.getPiece(i, j) == null){
-//                    s = "";
-//                    }else{
-//                    s = this.model.board.getPiece(i, j).toString();
-//                    }
-//                    this.view.setPieceString(s, i, j);
-//                }
-//            }
-//    }
+
 
     private void resetModel() {
         this.model = new Model();

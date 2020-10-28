@@ -45,10 +45,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-/**
- *
- * @author Shiqing Wu
- */
+
 public class View extends JFrame implements Observer {
 
     private JMenuBar menuBar = new JMenuBar();
@@ -107,13 +104,7 @@ public class View extends JFrame implements Observer {
 
     JTableHeader header = leaderboardTable.getTableHeader();
 
-    /**
-     * Step 1: The constructor initializes the frame window as well as the login
-     * interface.
-     *
-     * Note: We need to define the events of ActionListener in the Controller
-     * class. Go to Model.java for Step 2.
-     */
+   
     public View() {
         promotion = new JDialog(this, "Pawn Promotion");
         promotion.setAlwaysOnTop(true);
@@ -127,7 +118,7 @@ public class View extends JFrame implements Observer {
         promotion.add(knightButton);
         promotion.add(bishopButton);
 
-        //this.add(promotion);
+        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800, 800);
         this.setResizable(false);
@@ -135,13 +126,10 @@ public class View extends JFrame implements Observer {
         this.userPanel.add(wMessage);
         this.userPanel.add(wUName);
         this.userPanel.add(wUNInput);
-//        this.userPanel.add(wPWord);
-//        this.userPanel.add(wPWInput);
+
         this.userPanel.add(bMessage);
         this.userPanel.add(bUName);
         this.userPanel.add(bUNInput);
-//        this.userPanel.add(bPWord);
-//        this.userPanel.add(bPWInput);
 
         this.userPanel.add(loginButton);
 
@@ -172,6 +160,7 @@ public class View extends JFrame implements Observer {
         this.leaderboardPanel.setSize(800, 800);
         this.leaderboardPanel.add(leaderboardTable);
         this.leaderboardTable.setEnabled(false);
+        
 
         this.setVisible(true);
     }
@@ -334,26 +323,10 @@ public class View extends JFrame implements Observer {
         this.repaint();
     }
 
-    /**
-     * Step 7: Define the event when model has been modified.
-     *
-     * @param o
-     * @param arg
-     */
+
     @Override
     public void update(Observable o, Object arg) {
-//        Data data = (Data) arg; // Obtain the instance of data.
-//        if (!data.whiteLoginFlag) { // If loginFlage is false, then ask the user to input again.
-//            this.wUNInput.setText("");
-//            this.wPWInput.setText("");
-//            this.wMessage.setText("Invalid username or password.");
-//        }
-//        else if (!data.blackLoginFlag) { // If loginFlage is false, then ask the user to input again.
-//            this.bUNInput.setText("");
-//            this.bPWInput.setText("");
-//            this.bMessage.setText("Invalid username or password.");
-//        } else if (!this.started) { // If the game has not started, then start the game.
-        //this.startQuiz(); // Change the interface of the frame.
+
         if (arg instanceof String) {
             if (arg == "PROMOTION") {
                 promotion();
@@ -370,18 +343,7 @@ public class View extends JFrame implements Observer {
             this.started = true;
             this.game();
         }
-        //this.setQuestion(data.num1, data.num2); // Show the question on the interface.
-        /**
-         * You need to define ActionEvent for the next and the quit buttons in
-         * the Controller.java. Back to Controller.java for Step 8.
-         *
-         * After you finish Step 9, complete last two conditions.
-         */
-//        } else if (data.quitFlag) { // If user quits the game, display user's current score.
-//            //this.quitGame(data.currentScore);
-//        } else { // Otherwise, update a new question for the user.
-//            //this.setQuestion(data.num1, data.num2);
-//        }
+
     }
 
     public void leaderboard() {
@@ -440,11 +402,7 @@ public class View extends JFrame implements Observer {
                 row[3] = rs.getInt("losses");
                 row[4] = rs.getInt("wins") / (double) rs.getInt("losses");
                 leaderboardModel.addRow(row);
-//            for (int i = 1; i <= columns; i++)
-//            {  
-//                row[i - 1] = rs.getObject(i);
-//            }
-//            ((DefaultTableModel) leaderboardTable.getModel()).insertRow(rs.getRow()-1,row);
+
             }
         } catch (SQLException ex) {
 
