@@ -141,50 +141,7 @@ public class Model extends Observable {
                 }
             }
 
-//            PrintStream _err = System.err;
-//            System.setErr(new PrintStream(new OutputStream() {
-//                public void write(int b) {
-//                }
-//            }));
-//            if (isChecked()) {
-//                if (checkMate()) {
-//                    //System.setErr(_err);
-//                    if (whiteTurn) {
-////                            System.out.println("CHECKMATE " + blackPlayer.name + " Wins!");
-////                            blackPlayer.won();
-////                            whitePlayer.lost();
-//                        this.data.blackWins++;
-//                        this.data.whiteLosses++;
-//                        this.data.quitFlag = true;
-//                        this.data.winner = this.data.bUsername;
-//                        this.db.gameOver(data);
-//                        this.setChanged();
-//                        this.notifyObservers(data);
-//                        this.leaderboard();
-//                    } else {
-////                            System.out.println("CHECKMATE " + whitePlayer.name + " Wins!");
-////                            whitePlayer.won();
-////                            blackPlayer.lost();
-//                        this.data.whiteWins++;
-//                        this.data.blackLosses++;
-//                        this.data.winner = this.data.wUsername;
-//                        this.db.gameOver(data);
-//                        this.data.quitFlag = true;
-//                        this.setChanged();
-//                        
-//                        this.notifyObservers(data);
-//                        this.leaderboard();
-//                    }
-//                    this.over = true;
-//                    //update leaderboard
-//                    leaderboard.updateLeaderboard();
-//                } else {
-//                    //System.setErr(_err);
-//
-//                    //System.err.println("You are checked");
-//                }
-//            }
-            //System.setErr(_err);
+
         }
        
 
@@ -404,35 +361,7 @@ public class Model extends Observable {
         return true;
     }
 
-    // promotes pawn to a queen, rook, bishop or knight
-//    public void promotion(Piece piece) {
-//        System.out.println("What piece would you like to be promoted to?\n type Q for queen, R for rook, K for knight or B for bishop");
-//        Piece newPiece;
-//        while (true) {
-//            String newType = input.nextLine().toLowerCase();
-//            if (newType.equals("q")) {
-//                newPiece = new Queen(piece.x, piece.y, piece.colour);
-//                board.squares[piece.y][piece.x].setPiece(newPiece);
-//                return;
-//            } else if (newType.equals("r")) {
-//                newPiece = new Rook(piece.x, piece.y, piece.colour);
-//                board.squares[piece.y][piece.x].setPiece(newPiece);
-//                return;
-//            } else if (newType.equals("k")) {
-//                newPiece = new Knight(piece.x, piece.y, piece.colour);
-//                board.squares[piece.y][piece.x].setPiece(newPiece);
-//                return;
-//            } else if (newType.equals("b")) {
-//                newPiece = new Bishop(piece.x, piece.y, piece.colour);
-//                board.squares[piece.y][piece.x].setPiece(newPiece);
-//                return;
-//            } else {
-//                System.err.println("Invalid input");
-//                return;
-//            }
-//
-//        }
-//    }
+
 
     void leaderboard() {
         this.setChanged();

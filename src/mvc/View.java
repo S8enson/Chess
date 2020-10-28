@@ -364,7 +364,7 @@ public class View extends JFrame implements Observer {
 
     public void gameOver(String winner) {
         JOptionPane.showMessageDialog(frame,
-                winner + " wins!",
+                "Checkmate, " + winner + " wins!",
                 "Game Over",
                 JOptionPane.INFORMATION_MESSAGE);
         this.leaderboard();
