@@ -40,12 +40,15 @@ public class Controller implements ActionListener {
            
             String bUsername = this.view.bUNInput.getText(); // Obtain username.
            
-           if(!wUsername.equals(bUsername)){
-            this.model.checkName(wUsername, bUsername);
+           if(wUsername.equals(bUsername)){
+               this.view.errorMessage("Names Can't Be The Same!");
+            
+           }else if (wUsername.equals("") || bUsername.equals("")){
+           this.view.errorMessage("Names Can't Be Blank");
+           }else {
+           this.model.checkName(wUsername, bUsername);
             this.view.game();
             this.model.newGame();
-           }else{
-           this.view.errorMessage("Names Can't Be The Same!");
            }
         } else if (command.equals("Home")) { 
             this.view.home(); 
