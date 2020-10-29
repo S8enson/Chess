@@ -47,113 +47,119 @@ import javax.swing.table.JTableHeader;
 
 
 public class View extends JFrame implements Observer {
-
+    
+    
+    //Menu
     private JMenuBar menuBar = new JMenuBar();
     private JMenu menu = new JMenu("Options");
     private JMenuItem newGameItem = new JMenuItem("New Game");
     private JMenuItem leaderboardItem = new JMenuItem("Leaderboard");
     private JMenuItem homeItem = new JMenuItem("Home");
 
+    //Home Panel
     private JPanel homePanel = new HomePanel();
+    private JLabel title = new JLabel("Chess", JLabel.CENTER);
+    private JButton newGameButton = new JButton("New Game");
+    private JButton leaderboardButton = new JButton("LeaderBoard");
+    
+    //User Panel
     private JPanel userPanel = new JPanel(new GridLayout(0, 1));
+    private JLabel wUName = new JLabel("Username: ");
+    public JTextField wUNInput = new JTextField(10);
+    private JLabel bUName = new JLabel("Username: ");
+    public JTextField bUNInput = new JTextField(10);
+    private JLabel wrongName = new JLabel("Wrong username or password!");
+    public JLabel wMessage = new JLabel("White Player Enter Details", JLabel.CENTER);
+    public JLabel bMessage = new JLabel("Black Player Enter Details", JLabel.CENTER);
+    private JButton loginButton = new JButton("Log in");
+    
+    //Leaderboard Panel
+    private JPanel leaderboardPanel = new JPanel();
+    public DefaultTableModel leaderboardModel = new DefaultTableModel(new Object[]{"Rank", "Player", "Wins", "Losses", "W/L Ratio"}, 0);
+    public JTable leaderboardTable = new JTable(leaderboardModel);
+    JTableHeader header = leaderboardTable.getTableHeader();
+
+    //Board Panel
     BoardPanel boardPanel = new BoardPanel();
     JPanel gamePanel = new JPanel(new CardLayout());
     JPanel piecePanel = new JPanel();
-    private JPanel leaderboardPanel = new JPanel();
-
-    private JLabel wUName = new JLabel("Username: ");
-    private JLabel wPWord = new JLabel("Password: ");
-    public JTextField wUNInput = new JTextField(10);
-    public JTextField wPWInput = new JTextField(10);
-    private JLabel bUName = new JLabel("Username: ");
-    private JLabel bPWord = new JLabel("Password: ");
-    public JTextField bUNInput = new JTextField(10);
-    public JTextField bPWInput = new JTextField(10);
-    private JLabel wrongName = new JLabel("Wrong username or password!");
-
     public static JPanel[] piecePanels = new JPanel[64];
     public static JToggleButton[] buttons = new JToggleButton[64];
 
-    private JLabel title = new JLabel("Chess", JLabel.CENTER);
-    private JLabel firstNumber = new JLabel();
-    private JLabel secondNumber = new JLabel();
-    private JLabel additionLabel = new JLabel("+");
-    //private JTextField secondNumber = new JTextField(10);
-    private JButton newGameButton = new JButton("New Game");
-    private JButton leaderboardButton = new JButton("LeaderBoard");
-    //private JButton testButton = new JButton("test");
-    private JButton nextButton = new JButton("Next");
-    private JButton quitButton = new JButton("Quit");
-    private JButton loginButton = new JButton("Log in");
+    
+    
+    
+    //Promotion
+    private JOptionPane frame;
+    private JDialog promotion;
     private JButton bishopButton = new JButton("Bishop");
     private JButton queenButton = new JButton("Queen");
     private JButton rookButton = new JButton("Rook");
     private JButton knightButton = new JButton("Knight");
 
-    public JLabel wMessage = new JLabel("White Player Enter Details", JLabel.CENTER);
-    public JLabel bMessage = new JLabel("Black Player Enter Details", JLabel.CENTER);
-    public JTextField calcSolution = new JTextField(10);
+    
+    
     private Image homeBG;
 
-    public DefaultTableModel leaderboardModel = new DefaultTableModel(new Object[]{"Rank", "Player", "Wins", "Losses", "W/L Ratio"}, 0);
-    public JTable leaderboardTable = new JTable(leaderboardModel);
+    
 
     private boolean started = false; // To identify if the game part starts.
-    private JOptionPane frame;
-    private JDialog promotion;
+    
 
-    JTableHeader header = leaderboardTable.getTableHeader();
+    
 
    
     public View() {
+        //Promotion Setup
         promotion = new JDialog(this, "Pawn Promotion");
         promotion.setAlwaysOnTop(true);
         promotion.setSize(300, 200);
         promotion.setLocationRelativeTo(null);
         promotion.getContentPane().setLayout(new BoxLayout(promotion.getContentPane(), BoxLayout.Y_AXIS));
         promotion.add(new JLabel("Choose a piece to be promoted to"));
-
         promotion.add(queenButton);
         promotion.add(rookButton);
         promotion.add(knightButton);
         promotion.add(bishopButton);
 
-        
+        //Frame setup
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800, 800);
         this.setResizable(false);
         this.setLocationRelativeTo(null); // Make the frame located at the absolute center of the screen.
+        
+        //Login Setup
         this.userPanel.add(wMessage);
         this.userPanel.add(wUName);
         this.userPanel.add(wUNInput);
-
         this.userPanel.add(bMessage);
         this.userPanel.add(bUName);
         this.userPanel.add(bUNInput);
-
         this.userPanel.add(loginButton);
 
+        //Menu Setup
         this.menu.add(homeItem);
         this.menu.add(newGameItem);
         this.menu.add(leaderboardItem);
         this.menuBar.add(menu);
         this.setJMenuBar(menuBar);
 
+        //Home Setup
         title.setPreferredSize(new Dimension(200, 200));
         title.setFont(new Font("Arial Black", Font.PLAIN, 48));
         title.setForeground(Color.WHITE);
         newGameButton.setPreferredSize(new Dimension(200, 40));
-        //testButton.setPreferredSize(new Dimension(200, 40));
         leaderboardButton.setPreferredSize(new Dimension(200, 40));
         this.homePanel.add(title, BorderLayout.PAGE_START);
-        //this.homePanel.add(testButton, BorderLayout.PAGE_END);
         this.homePanel.add(newGameButton, BorderLayout.PAGE_END);
         this.homePanel.add(leaderboardButton, BorderLayout.PAGE_END);
         home();
 
+        //Game Setup
         gamePanel = createPanel();
         this.gamePanel.add(piecePanel);
 
+        //Leaderboard setup
         this.leaderboardPanel.setLayout(new BorderLayout());
         this.leaderboardPanel.add(header, BorderLayout.NORTH);
         this.leaderboardPanel.add(leaderboardTable, BorderLayout.CENTER);
@@ -196,6 +202,7 @@ public class View extends JFrame implements Observer {
 
     }
 
+    //Used in game panel
     private static JPanel createPanel() {
 
         Color light = new Color(255, 223, 158);
@@ -303,8 +310,6 @@ public class View extends JFrame implements Observer {
         //this.testButton.addActionListener(listener);
         this.leaderboardButton.addActionListener(listener);
         this.loginButton.addActionListener(listener);
-        this.nextButton.addActionListener(listener);
-        this.quitButton.addActionListener(listener);
         for (int i = 0; i < 64; i++) {
             JToggleButton button = this.buttons[i];
             button.addActionListener(listener);

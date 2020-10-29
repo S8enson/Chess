@@ -60,7 +60,7 @@ public class Database {
 
             } else {
 
-                System.out.println("no such user");
+                
                 statement.executeUpdate("INSERT INTO UserInfo "
                         + "VALUES('" + wUsername + "', 0, 0)");
 
@@ -76,7 +76,7 @@ public class Database {
 
             } else {
 
-                System.out.println("no such user");
+                
                 statement.executeUpdate("INSERT INTO UserInfo "
                         + "VALUES('" + bUsername + "', 0, 0)");
 

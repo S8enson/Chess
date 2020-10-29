@@ -52,13 +52,22 @@ public class ModelTest {
     public void testMoveValid() {
         System.out.println("moveValid");
         //legal
-        int initRow = 0;
+        int initRow = 1;
         int initCol = 0;
-        int finalRow = 0;
+        int finalRow = 3;
         int finalCol = 0;
-        boolean checking = false;
+        boolean checking = true;
         boolean expResult = true;
         boolean result = model.moveValid(initRow, initCol, finalRow, finalCol, checking);
+        assertEquals(expResult, result);
+        
+        initRow = 1;
+        initCol = 0;
+        finalRow = 2;
+        finalCol = 1;
+        
+        expResult = false;
+        result = model.moveValid(initRow, initCol, finalRow, finalCol, checking);
         assertEquals(expResult, result);
         
     }
@@ -88,6 +97,7 @@ public class ModelTest {
         model.board.squares[6][4] = new Space(4, 6, null);
         model.board.squares[4][4] = new Space(4, 4, new Pawn(4, 4, Colour.BLACK));
         expResult = true;
+        model.whiteTurn = false;
         result = model.isChecked();
         assertEquals(expResult, result);
     }
@@ -117,6 +127,7 @@ public class ModelTest {
         model.board.squares[6][4] = new Space(4, 6, null);
         model.board.squares[4][4] = new Space(4, 4, new Pawn(4, 4, Colour.BLACK));
         expResult = true;
+        model.whiteTurn = false;
         result = model.checkMate();
         assertEquals(expResult, result);
         
@@ -150,14 +161,22 @@ public class ModelTest {
         boolean take = false;
         int initRow = 0;
         int initCol = 0;
-        int finalRow = 0;
+        int finalRow = 2;
         int finalCol = 0;
-        Model instance = new Model();
+        
         boolean expResult = false;
-        boolean result = instance.checkPath(take, initRow, initCol, finalRow, finalCol);
+        boolean result = model.checkPath(take, initRow, initCol, finalRow, finalCol);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        initRow = 1;
+        initCol = 0;
+        finalRow = 2;
+        finalCol = 0;
+        
+        expResult = true;
+        result = model.checkPath(take, initRow, initCol, finalRow, finalCol);
+        assertEquals(expResult, result);
+        
     }
 
 
